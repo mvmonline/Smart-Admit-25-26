@@ -3,152 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MVM Nalbari - Admit Card</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Smart Admit Card - MVM Nalbari</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
-        :root { --primary: #0A2240; --secondary: #0056b3; --border: #dee2e6; }
-        body { font-family: 'Roboto', sans-serif; background: #f4f7f6; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        
-        /* Login UI */
-        .login-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 380px; text-align: center; }
-        .login-card input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; }
-        .login-card button { width: 100%; padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-        /* Admit Card UI */
-        #admitContainer { display: none; width: 210mm; background: white; padding: 15mm; border: 2px solid var(--primary); box-sizing: border-box; position: relative; }
-        .header { display: flex; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
-        .header img { width: 80px; margin-right: 20px; }
-        .header h1 { font-family: 'Montserrat'; font-size: 22px; color: var(--primary); margin: 0; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
 
-        .student-section { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .info-table { width: 70%; border-collapse: collapse; }
-        .info-table td { padding: 6px 0; font-size: 14px; }
-        .info-table td:first-child { font-weight: bold; width: 130px; }
+        .admit-card-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
 
-        .image-box { text-align: center; width: 130px; }
-        .photo-frame { width: 120px; height: 150px; border: 1px solid #ccc; background: #fafafa; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .schedule table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .schedule th, .schedule td { border: 1px solid #ccc; padding: 8px; font-size: 13px; text-align: left; }
-        .schedule th { background: var(--primary); color: white; }
+        .admit-card {
+            width: 800px;
+            height: 480px;
+            background: white;
+            border: 2px solid #1a237e;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background-image: url('https://via.placeholder.com/400?text=MVM+LOGO'); /* Replace with your actual Logo URL */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 300px;
+            background-color: rgba(255, 255, 255, 0.92);
+            background-blend-mode: overlay;
+        }
 
-        .footer { display: flex; justify-content: space-between; margin-top: 40px; }
-        .sig-container { text-align: center; width: 180px; }
-        .sig-container img { height: 45px; margin-bottom: 5px; }
-        .sig-text { border-top: 1px solid black; padding-top: 5px; font-weight: bold; font-size: 12px; }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #1a237e;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
 
-        @media print { .login-card, #printBtn { display: none !important; } #admitContainer { display: block !important; border: 1px solid #000; } }
+        .header h1 {
+            color: #1a237e;
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            margin: 5px 0;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .exam-title {
+            background: #1a237e;
+            color: white;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .student-details {
+            width: 65%;
+        }
+
+        .detail-row {
+            margin: 10px 0;
+            display: flex;
+        }
+
+        .label {
+            font-weight: bold;
+            width: 130px;
+            color: #333;
+        }
+
+        .value {
+            border-bottom: 1px dotted #999;
+            flex-grow: 1;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .photo-box {
+            width: 120px;
+            height: 140px;
+            border: 2px solid #1a237e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            background: #fafafa;
+        }
+
+        .barcode-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .footer-signatures {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 50px;
+            text-align: center;
+        }
+
+        .sig-box {
+            width: 120px;
+        }
+
+        .sig-box img {
+            width: 100px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .sig-text {
+            border-top: 1px solid #333;
+            font-size: 11px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .admit-card { border: 1px solid #000; box-shadow: none; page-break-after: always; }
+            button { display: none; }
+        }
+
+        .loading { font-size: 20px; text-align: center; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <div class="login-card" id="loginUI">
-        <h2>MVM NALBARI</h2>
-        <p>Enter details to download Admit Card</p>
-        <input type="text" id="sid" placeholder="Student ID (e.g. MVM001)">
-        <input type="date" id="dob">
-        <button onclick="fetchAdmitCard()">Get Admit Card</button>
-        <p id="msg" style="color:red;"></p>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button onclick="window.print()" style="padding: 10px 20px; background: #1a237e; color: white; border: none; cursor: pointer; border-radius: 5px;">Print All Admit Cards</button>
     </div>
 
-    <div id="admitContainer">
-        <div class="header">
-            <img src="logo.png" alt="Logo">
-            <div>
-                <h1>MAHARISHI VIDYA MANDIR, NALBARI</h1>
-                <p>BATIRAM ROAD, NALBARI, PIN-781335</p>
-                <p><strong>ADMIT CARD: FINAL EXAMINATION 2025-26</strong></p>
-            </div>
-        </div>
-
-        <div id="contentBody"></div>
-
-        <button id="printBtn" style="margin-top:20px; padding:10px 25px; background:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;" onclick="window.print()">Print Admit Card</button>
+    <div id="cards-container" class="admit-card-container">
+        <div class="loading">Fetching Data from API...</div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <script>
-        const API = 'https://script.google.com/macros/s/AKfycbzwD9D276tD_ZpJxy64NX7n9vqeL-W8qedoA2nPAqqD5cudV3MmKfYaNNJrSX7IpbB84Q/exec';
+        const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgFVtpiwKazNCh4vKMJqp-DqwwsUL9cN-4-TBHHlosZUesNZUfv1JGeP6hMe0eW-2ahW-F_mV9ukF2N7AxmxjNSmu_ClPOdL0GeA6vU0vWlW5p8V9RKMpBEeMIJ5rWDZXFRxVSHwrumh4i72F1LCmathfPSdVWTjCrLauICVzfK_c4md_Qn4RZrhh75dqxno5zwOYWGlyW3b8c5nTNKOABTdT4hvp3GUbJlHHjmvMs75-GwgJ_RY4k8K9aH0ZkukmiS3NW1lw_RCjE8WQJYttD7PWWHUBO_T5N4ZDRx&lib=M1wakASRa9VpADuY3EgiM1Cugz3qUInd5";
 
-        // SOLVING THE PROBLEM: This function converts Google Drive View URLs to Direct Image URLs
-        function fixDriveUrl(url) {
-            if (!url) return '';
-            // Extract the File ID from the Google Drive link
-            const match = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
-            if (match && match[1]) {
-                // Return a direct-link format that works in <img> tags
-                return `https://lh3.googleusercontent.com/u/0/d/${match[1]}`;
-            }
-            return url;
-        }
-
-        async function fetchAdmitCard() {
-            const sid = document.getElementById('sid').value.toUpperCase();
-            const dob = document.getElementById('dob').value;
-            const msg = document.getElementById('msg');
-            
-            msg.innerText = "Processing...";
-            
+        async function fetchAdmitCards() {
             try {
-                const res = await fetch(API);
-                const json = await res.json();
-                const student = json.data.find(s => s['Student ID'] == sid);
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                // Assuming your API returns an array under a property like 'data' or 'user'
+                // Adjust 'data.data' based on your actual JSON structure
+                const students = data.data || data; 
 
-                if (student) {
-                    // Note: Your sheet date format must match (YYYY-MM-DD)
-                    showAdmit(student);
-                } else {
-                    msg.innerText = "Student not found.";
-                }
-            } catch (e) {
-                msg.innerText = "Error connecting to server.";
-            }
-        }
+                const container = document.getElementById('cards-container');
+                container.innerHTML = '';
 
-        function showAdmit(s) {
-            let exams = '';
-            for(let i=1; i<=10; i++) {
-                if(s[`Date ${i}`]) exams += `<tr><td>${s[`Date ${i}`]}</td><td>${s[`Paper ${i}`]}</td><td></td><td></td></tr>`;
-            }
+                students.forEach((student, index) => {
+                    // Mapping your API fields (Update names if they differ in your Sheet)
+                    const name = student.Name || "N/A";
+                    const roll = student.RollNo || student.Roll || "000";
+                    const class_name = student.Class || "N/A";
+                    const father = student.FatherName || "N/A";
+                    const dob = student.DOB || "N/A";
 
-            document.getElementById('contentBody').innerHTML = `
-                <div class="student-section">
-                    <table class="info-table">
-                        <tr><td>Student Name</td><td>: ${s['Student Name']}</td></tr>
-                        <tr><td>Father's Name</td><td>: ${s["Father's Name"]}</td></tr>
-                        <tr><td>Student ID</td><td>: ${s['Student ID']}</td></tr>
-                        <tr><td>Class / Roll</td><td>: ${s['Class']} - ${s['Section']} / ${s['Roll No']}</td></tr>
-                    </table>
-                    <div class="image-box">
-                        <div class="photo-frame">
-                            <img src="${fixDriveUrl(s['Photo URL'])}" alt="Student Photo">
+                    const cardHtml = `
+                        <div class="admit-card">
+                            <div class="header">
+                                <h1>Maharishi Vidya Mandir, Nalbari</h1>
+                                <p>CBSE CURRICULUM • BATIRAM ROAD, NALBARI, PIN-781335</p>
+                                <div class="exam-title">FINAL EXAMINATION 2025-2026</div>
+                            </div>
+
+                            <div class="content">
+                                <div class="student-details">
+                                    <div class="detail-row"><span class="label">Candidate Name:</span><span class="value">${name}</span></div>
+                                    <div class="detail-row"><span class="label">Father's Name:</span><span class="value">${father}</span></div>
+                                    <div class="detail-row"><span class="label">Class:</span><span class="value">${class_name}</span></div>
+                                    <div class="detail-row"><span class="label">Roll Number:</span><span class="value">${roll}</span></div>
+                                    <div class="detail-row"><span class="label">Date of Birth:</span><span class="value">${dob}</span></div>
+                                </div>
+                                <div class="photo-box">
+                                    PASTE<br>PHOTOGRAPH<br>HERE
+                                </div>
+                            </div>
+
+                            <div class="barcode-container">
+                                <svg id="barcode-${index}"></svg>
+                            </div>
+
+                            <div class="footer-signatures">
+                                <div class="sig-box">
+                                    <div style="height:40px"></div> <div class="sig-text">Candidate's Signature</div>
+                                </div>
+                                <div class="sig-box">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch_Signature.png" alt="Principal Signature">
+                                    <div class="sig-text">Principal Signature</div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="qrcode" style="margin-top:10px;"></div>
-                    </div>
-                </div>
-                <div class="schedule">
-                    <table>
-                        <thead><tr><th>Date</th><th>Subject</th><th>Student Sig</th><th>Invigilator</th></tr></thead>
-                        <tbody>${exams}</tbody>
-                    </table>
-                </div>
-                <div class="footer">
-                    <div class="sig-container">
-                        <img src="${fixDriveUrl(s['Signature URL'])}" alt="Sig">
-                        <div class="sig-text">Student Signature</div>
-                    </div>
-                    <div class="sig-container">
-                        <img src="sign.png" alt="Principal">
-                        <div class="sig-text">Principal Signature</div>
-                    </div>
-                </div>
-            `;
+                    `;
+                    container.innerHTML += cardHtml;
+                });
 
-            document.getElementById('loginUI').style.display = 'none';
-            document.getElementById('admitContainer').style.display = 'block';
-            new QRCode(document.getElementById("qrcode"), { text: s['Student ID'], width: 80, height: 80 });
+                // Generate Barcodes after HTML is injected
+                students.forEach((student, index) => {
+                    const roll = student.RollNo || student.Roll || "000";
+                    JsBarcode(`#barcode-${index}`, roll, {
+                        format: "CODE128",
+                        lineColor: "#1a237e",
+                        width: 1.5,
+                        height: 40,
+                        displayValue: true
+                    });
+                });
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById('cards-container').innerHTML = "Failed to load data. Please check API URL.";
+            }
         }
+
+        fetchAdmitCards();
     </script>
 </body>
 </html>
