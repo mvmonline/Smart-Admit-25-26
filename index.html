@@ -2,246 +2,204 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Admit Card - MVM Nalbari</title>
+    <title>MVM Nalbari - Smart Admit Card System</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
+        body { font-family: 'Arial', sans-serif; background-color: #e0e0e0; margin: 0; padding: 20px; }
+        .page-container { width: 210mm; margin: auto; }
+        
+        /* Admit Card Layout */
+        .admit-card { 
+            background: white; 
+            padding: 40px; 
+            margin-bottom: 30px; 
+            border: 2px solid #000; 
+            position: relative; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            page-break-after: always;
         }
 
-        .admit-card-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            opacity: 0.08;
+            pointer-events: none;
         }
 
-        .admit-card {
-            width: 800px;
-            height: 480px;
-            background: white;
-            border: 2px solid #1a237e;
-            position: relative;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            background-image: url('https://via.placeholder.com/400?text=MVM+LOGO'); /* Replace with your actual Logo URL */
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 300px;
-            background-color: rgba(255, 255, 255, 0.92);
-            background-blend-mode: overlay;
-        }
+        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .header h1 { margin: 0; font-size: 26px; color: #1a237e; text-transform: uppercase; }
+        .header p { margin: 5px 0; font-weight: bold; font-size: 14px; }
+        .exam-banner { background: #f0f0f0; padding: 5px; margin: 10px 0; font-weight: bold; border: 1px solid #ccc; }
 
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #1a237e;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
+        .main-content { display: flex; justify-content: space-between; margin-top: 20px; }
+        .info-table { width: 75%; border-collapse: collapse; }
+        .info-table td { padding: 8px 0; font-size: 15px; vertical-align: top; }
+        .label { font-weight: bold; width: 140px; }
 
-        .header h1 {
-            color: #1a237e;
-            margin: 0;
-            font-size: 24px;
-            text-transform: uppercase;
-        }
-
-        .header p {
-            margin: 5px 0;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .exam-title {
-            background: #1a237e;
-            color: white;
-            display: inline-block;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .content {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .student-details {
-            width: 65%;
-        }
-
-        .detail-row {
-            margin: 10px 0;
-            display: flex;
-        }
-
-        .label {
-            font-weight: bold;
-            width: 130px;
-            color: #333;
-        }
-
-        .value {
-            border-bottom: 1px dotted #999;
-            flex-grow: 1;
-            color: #000;
-            text-transform: uppercase;
-        }
-
-        .photo-box {
-            width: 120px;
-            height: 140px;
-            border: 2px solid #1a237e;
+        .photo-box { 
+            width: 140px; 
+            height: 165px; 
+            border: 1px solid #000; 
+            text-align: center; 
+            font-size: 11px; 
+            background: #fafafa;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            font-size: 12px;
-            color: #999;
-            background: #fafafa;
         }
+        .photo-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .barcode-container {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-        }
+        /* Exam Table */
+        .exam-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        .exam-table th, .exam-table td { border: 1px solid #000; padding: 10px; text-align: center; font-size: 14px; }
+        .exam-table th { background-color: #f9f9f9; }
 
-        .footer-signatures {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 50px;
-            text-align: center;
-        }
+        /* Signatures */
+        .footer-sigs { display: flex; justify-content: space-between; margin-top: 50px; }
+        .sig-box { width: 220px; text-align: center; border-top: 1px solid #000; padding-top: 5px; font-weight: bold; font-size: 13px; }
+        .sig-box img { height: 45px; margin-bottom: -5px; }
 
-        .sig-box {
-            width: 120px;
-        }
+        /* Instructions */
+        .instructions { margin-top: 30px; font-size: 11px; line-height: 1.5; border-top: 1px solid #eee; padding-top: 15px; }
+        .instructions h4 { margin: 0 0 5px 0; text-decoration: underline; }
 
-        .sig-box img {
-            width: 100px;
-            height: 40px;
-            object-fit: contain;
-        }
-
-        .sig-text {
-            border-top: 1px solid #333;
-            font-size: 11px;
-            margin-top: 5px;
-            font-weight: bold;
-        }
+        .barcode-svg { display: block; margin: 15px auto; }
+        
+        .no-print { text-align: center; margin-bottom: 20px; }
+        .print-btn { padding: 12px 30px; background: #1a237e; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
 
         @media print {
             body { background: none; padding: 0; }
-            .admit-card { border: 1px solid #000; box-shadow: none; page-break-after: always; }
-            button { display: none; }
+            .no-print { display: none; }
+            .admit-card { box-shadow: none; border: 1px solid #000; margin: 0; }
         }
-
-        .loading { font-size: 20px; text-align: center; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-        <button onclick="window.print()" style="padding: 10px 20px; background: #1a237e; color: white; border: none; cursor: pointer; border-radius: 5px;">Print All Admit Cards</button>
+    <div class="no-print">
+        <button class="print-btn" onclick="window.print()">Download & Print All Admit Cards</button>
     </div>
 
-    <div id="cards-container" class="admit-card-container">
-        <div class="loading">Fetching Data from API...</div>
+    <div id="admit-cards-wrapper" class="page-container">
+        <p style="text-align:center;">Synchronizing with Google Sheet...</p>
     </div>
 
     <script>
-        const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgFVtpiwKazNCh4vKMJqp-DqwwsUL9cN-4-TBHHlosZUesNZUfv1JGeP6hMe0eW-2ahW-F_mV9ukF2N7AxmxjNSmu_ClPOdL0GeA6vU0vWlW5p8V9RKMpBEeMIJ5rWDZXFRxVSHwrumh4i72F1LCmathfPSdVWTjCrLauICVzfK_c4md_Qn4RZrhh75dqxno5zwOYWGlyW3b8c5nTNKOABTdT4hvp3GUbJlHHjmvMs75-GwgJ_RY4k8K9aH0ZkukmiS3NW1lw_RCjE8WQJYttD7PWWHUBO_T5N4ZDRx&lib=M1wakASRa9VpADuY3EgiM1Cugz3qUInd5";
+        const API_URL = "https://script.google.com/macros/s/AKfycbyhkqZUTi4lGXOAqJJSrBwBJuYz8u3eBVAZGmybOeh6k5EaHMh2E4aMa7OMEHLRyqAczA/exec";
 
-        async function fetchAdmitCards() {
+        async function fetchRecords() {
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
-                
-                // Assuming your API returns an array under a property like 'data' or 'user'
-                // Adjust 'data.data' based on your actual JSON structure
-                const students = data.data || data; 
-
-                const container = document.getElementById('cards-container');
+                const container = document.getElementById('admit-cards-wrapper');
                 container.innerHTML = '';
 
-                students.forEach((student, index) => {
-                    // Mapping your API fields (Update names if they differ in your Sheet)
-                    const name = student.Name || "N/A";
-                    const roll = student.RollNo || student.Roll || "000";
-                    const class_name = student.Class || "N/A";
-                    const father = student.FatherName || "N/A";
-                    const dob = student.DOB || "N/A";
+                data.forEach((student, index) => {
+                    // Extracting keys dynamically from your sheet
+                    const name = student["Student Name"] || "N/A";
+                    const father = student["Father's Name"] || "N/A";
+                    const id = student["Student ID"] || "000000";
+                    const className = student["Class"] || "N/A";
+                    const roll = student["Roll No"] || "N/A";
+                    const photo = student["Photo"] || "";
 
                     const cardHtml = `
                         <div class="admit-card">
+                            <img src="https://via.placeholder.com/400?text=MVM+LOGO" class="watermark">
+                            
                             <div class="header">
                                 <h1>Maharishi Vidya Mandir, Nalbari</h1>
                                 <p>CBSE CURRICULUM • BATIRAM ROAD, NALBARI, PIN-781335</p>
-                                <div class="exam-title">FINAL EXAMINATION 2025-2026</div>
+                                <div class="exam-banner">ADMIT CARD: FINAL EXAMINATION 2025-2026</div>
                             </div>
 
-                            <div class="content">
-                                <div class="student-details">
-                                    <div class="detail-row"><span class="label">Candidate Name:</span><span class="value">${name}</span></div>
-                                    <div class="detail-row"><span class="label">Father's Name:</span><span class="value">${father}</span></div>
-                                    <div class="detail-row"><span class="label">Class:</span><span class="value">${class_name}</span></div>
-                                    <div class="detail-row"><span class="label">Roll Number:</span><span class="value">${roll}</span></div>
-                                    <div class="detail-row"><span class="label">Date of Birth:</span><span class="value">${dob}</span></div>
-                                </div>
+                            <div class="main-content">
+                                <table class="info-table">
+                                    <tr><td class="label">Student Name</td><td>: ${name}</td></tr>
+                                    <tr><td class="label">Father's Name</td><td>: ${father}</td></tr>
+                                    <tr><td class="label">Student ID</td><td>: ${id}</td></tr>
+                                    <tr><td class="label">Class / Roll No</td><td>: ${className} / ${roll}</td></tr>
+                                </table>
                                 <div class="photo-box">
-                                    PASTE<br>PHOTOGRAPH<br>HERE
+                                    ${photo ? `<img src="${photo}">` : 'Affix Recent<br>Photograph'}
                                 </div>
                             </div>
 
-                            <div class="barcode-container">
-                                <svg id="barcode-${index}"></svg>
+                            <table class="exam-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Subject / Paper</th>
+                                        <th>Student's Sig.</th>
+                                        <th>Invigilator's Sig.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>${student["Date 1"] || ""}</td>
+                                        <td>${student["Subject 1"] || ""}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>${student["Date 2"] || ""}</td>
+                                        <td>${student["Subject 2"] || ""}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>${student["Date 3"] || ""}</td>
+                                        <td>${student["Subject 3"] || ""}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <svg id="barcode-${index}" class="barcode-svg"></svg>
+
+                            <div class="footer-sigs">
+                                <div class="sig-box">Student's Signature</div>
+                                <div class="sig-box">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch_Signature.png"><br>
+                                    Principal's Signature
+                                </div>
                             </div>
 
-                            <div class="footer-signatures">
-                                <div class="sig-box">
-                                    <div style="height:40px"></div> <div class="sig-text">Candidate's Signature</div>
-                                </div>
-                                <div class="sig-box">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch_Signature.png" alt="Principal Signature">
-                                    <div class="sig-text">Principal Signature</div>
-                                </div>
+                            <div class="instructions">
+                                <h4>Instructions for Candidates</h4>
+                                1. Carry this card daily. [span_4](start_span)Entry is prohibited without it[span_4](end_span). 
+                                2. [span_5](start_span)Reach school 15 mins before time[span_5](end_span). 
+                                3. [span_6](start_span)Gadgets like smart watches/phones are strictly prohibited[span_6](end_span). 
+                                4. [span_7](start_span)Any misconduct leads to cancellation of candidature[span_7](end_span).
                             </div>
                         </div>
                     `;
                     container.innerHTML += cardHtml;
                 });
 
-                // Generate Barcodes after HTML is injected
-                students.forEach((student, index) => {
-                    const roll = student.RollNo || student.Roll || "000";
-                    JsBarcode(`#barcode-${index}`, roll, {
+                // Generate Barcodes after HTML is rendered
+                data.forEach((student, index) => {
+                    JsBarcode(`#barcode-${index}`, student["Student ID"] || "00000", {
                         format: "CODE128",
-                        lineColor: "#1a237e",
-                        width: 1.5,
+                        width: 1.8,
                         height: 40,
                         displayValue: true
                     });
                 });
 
             } catch (error) {
-                console.error("Error fetching data:", error);
-                document.getElementById('cards-container').innerHTML = "Failed to load data. Please check API URL.";
+                document.getElementById('admit-cards-wrapper').innerHTML = 
+                    "<div style='color:red; text-align:center;'>Error: Could not connect to the API. Ensure your Web App is deployed as 'Anyone'.</div>";
             }
         }
 
-        fetchAdmitCards();
+        fetchRecords();
     </script>
 </body>
 </html>
