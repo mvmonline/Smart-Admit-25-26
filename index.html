@@ -3,127 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MVM Nalbari - Professional Admit Card</title>
+    <title>MVM Nalbari - Official Admit Card Portal</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500;700&family=Libre+Barcode+128&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto:wght@400;700&family=Libre+Barcode+128&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
         :root {
-            --primary-blue: #1a237e;
-            --secondary-blue: #0d47a1;
-            --accent-red: #d32f2f;
-            --text-dark: #212121;
-            --border-color: #c5cae9;
+            --primary-blue: #0A2240;
+            --accent-red: #990000;
+            --border-color: #dee2e6;
         }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f2f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        body { font-family: 'Roboto', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+
+        /* Login Screen */
+        .login-container { width: 100%; max-width: 420px; margin-top: 60px; }
+        .login-box { background: white; padding: 45px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid var(--primary-blue); }
+        .logo-login { width: 90px; margin-bottom: 20px; }
+        .input-group { position: relative; margin-bottom: 25px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        .login-box input { width: 100%; padding: 14px 14px 14px 45px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .login-box button { width: 100%; padding: 15px; background: var(--primary-blue); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .login-box button:hover { background: #003366; transform: translateY(-2px); }
+
+        /* Admit Card Design (A4 Standard) */
+        .page-container { width: 210mm; display: none; margin-top: 20px; }
+        .admit-card-page {
+            background: white; padding: 15mm; height: 297mm; box-sizing: border-box;
+            border: 2px solid var(--primary-blue); position: relative; display: flex; flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
         }
 
-        /* Login Section Styles */
-        .login-container { width: 100%; max-width: 450px; margin-top: 50px; }
-        .login-box {
-            background: #ffffff; padding: 40px; border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center;
-            border-top: 5px solid var(--primary-blue);
-        }
-        .logo-login { width: 100px; margin-bottom: 20px; }
-        .login-box h2 { font-family: 'Montserrat', sans-serif; color: var(--primary-blue); margin-bottom: 10px; font-weight: 800; }
-        .input-group { position: relative; margin-bottom: 20px; }
-        .input-group i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #757575; }
-        .login-box input {
-            width: 100%; padding: 15px 15px 15px 50px; border: 2px solid #eee;
-            border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: 0.3s;
-        }
-        .login-box input:focus { border-color: var(--primary-blue); outline: none; background: #f8f9ff; }
-        .login-box button {
-            width: 100%; background: var(--primary-blue); color: white;
-            padding: 16px; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
-            transition: 0.3s;
-        }
-        .login-box button:hover { background: var(--secondary-blue); transform: translateY(-2px); }
-
-        /* Admit Card Layout */
-        .page-container { width: 210mm; display: none; margin: 20px auto; }
-        
-        .admit-card-page, .instructions-page {
-            background: white;
-            padding: 15mm;
-            box-sizing: border-box;
-            position: relative;
-            height: 297mm;
-            border: 12px solid var(--primary-blue);
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
+        /* Watermark Background */
         .watermark {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 120px; font-weight: 900; color: rgba(26, 35, 126, 0.05);
-            z-index: 0; white-space: nowrap; pointer-events: none;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 140mm; height: 140mm; opacity: 0.05; z-index: 0;
+            background: url('logo.png') center/contain no-repeat;
         }
 
-        .header-section {
-            text-align: center; border-bottom: 4px double var(--primary-blue);
-            padding-bottom: 15px; margin-bottom: 25px; position: relative; z-index: 1;
-        }
+        .header { display: flex; align-items: center; border-bottom: 4px double var(--primary-blue); padding-bottom: 15px; margin-bottom: 25px; position: relative; z-index: 1; }
+        .logo-header { width: 110px; height: 110px; object-fit: contain; }
+        .header-text { flex-grow: 1; text-align: center; }
+        .header-text h1 { margin: 0; color: var(--primary-blue); font-size: 26px; font-family: 'Montserrat'; font-weight: 800; text-transform: uppercase; }
+        .header-text p { margin: 3px 0; font-size: 13px; font-weight: 500; }
+        .admit-label { color: var(--accent-red); font-size: 28px; font-weight: 800; text-decoration: underline; margin-top: 10px; }
 
-        .school-name { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 800; color: var(--primary-blue); margin: 5px 0; }
-        .cbse-badge { background: var(--primary-blue); color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; display: inline-block; margin: 5px 0; }
-        .admit-title { font-size: 32px; color: var(--accent-red); font-weight: 800; text-decoration: underline; margin: 10px 0; }
-
-        .content-grid { display: grid; grid-template-columns: 1fr 180px; gap: 30px; position: relative; z-index: 1; }
-        
+        .content-body { display: flex; gap: 30px; margin-top: 20px; position: relative; z-index: 1; }
+        .details-pane { flex-grow: 1; }
         .details-table { width: 100%; border-collapse: collapse; }
-        .details-table td { padding: 10px 5px; border-bottom: 1px dashed #ccc; }
-        .label { font-weight: bold; color: var(--primary-blue); width: 150px; font-size: 15px; }
-        .value { font-size: 17px; font-weight: 700; color: #333; }
+        .details-table td { padding: 12px 5px; border-bottom: 1px dashed #ccc; font-size: 16px; }
+        .label { font-weight: bold; color: var(--primary-blue); width: 160px; }
+        .value { font-weight: 700; color: #111; }
 
-        .photo-box {
-            width: 160px; height: 190px; border: 3px solid var(--primary-blue);
-            border-radius: 8px; overflow: hidden; background: #fff;
-            display: flex; align-items: center; justify-content: center; text-align: center; font-size: 12px;
+        .photo-pane { text-align: center; width: 160px; }
+        .photo-box { 
+            width: 160px; height: 200px; border: 2px solid var(--primary-blue); 
+            display: flex; align-items: center; justify-content: center; padding: 8px;
+            font-size: 11px; color: #444; font-weight: 700; text-align: center;
+            background: #fff; box-sizing: border-box;
         }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .barcode-container {
-            text-align: center; margin: 25px 0; padding: 15px;
-            background: #f8f9ff; border: 1px solid var(--border-color); border-radius: 10px;
-        }
-        .barcode-font { font-family: 'Libre Barcode 128', cursive; font-size: 60px; line-height: 1; color: #000; }
+        /* Barcode Area */
+        .barcode-area { text-align: center; margin: 35px 0; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; position: relative; z-index: 1; }
+        .barcode-font { font-family: 'Libre Barcode 128', cursive; font-size: 75px; display: block; color: black; line-height: 1; }
+        .barcode-id { font-size: 12px; font-weight: bold; letter-spacing: 4px; margin-top: 5px; }
 
-        .exam-table { width: 100%; border-collapse: collapse; margin-top: 20px; z-index: 1; position: relative; }
-        .exam-table th { background: var(--primary-blue); color: white; padding: 12px; font-size: 14px; }
-        .exam-table td { border: 1px solid #ddd; padding: 10px; text-align: center; height: 40px; }
+        .exam-table { width: 100%; border-collapse: collapse; margin-top: 25px; z-index: 1; }
+        .exam-table th { background: var(--primary-blue); color: white; padding: 12px; font-size: 14px; text-transform: uppercase; }
+        .exam-table td { border: 1px solid #999; padding: 12px; text-align: center; font-size: 14px; }
 
-        .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 20px; }
-        .sig-block { text-align: center; width: 200px; }
-        .sig-line { border-top: 1px solid #333; margin-top: 10px; font-weight: bold; color: var(--primary-blue); padding-top: 5px; }
-        .sig-img { height: 50px; object-fit: contain; }
+        .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-top: 40px; position: relative; z-index: 1; }
+        .sig-box { text-align: center; width: 220px; }
+        .sig-img { height: 65px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto; object-fit: contain; }
+        .sig-line { border-top: 2px solid var(--primary-blue); padding-top: 5px; font-weight: 800; font-size: 15px; color: var(--primary-blue); }
 
-        .instructions-list { font-size: 14px; line-height: 1.8; color: #333; padding-left: 20px; }
-        .instructions-list li { margin-bottom: 10px; }
-
-        .action-buttons { display: none; gap: 15px; margin: 20px 0; }
-        .btn { padding: 15px 30px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 16px; }
-        .btn-print { background: var(--primary-blue); }
-        .btn-pdf { background: #2e7d32; }
+        .action-btns { display: none; gap: 15px; margin-top: 25px; }
+        .btn-print { padding: 15px 30px; background: var(--primary-blue); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
 
         @media print {
-            body { background: white; padding: 0; }
-            .login-container, .action-buttons { display: none !important; }
-            .page-container { display: block !important; margin: 0; width: 100%; }
-            .admit-card-page, .instructions-page { border: 8px solid var(--primary-blue) !important; height: 296mm; page-break-after: always; }
+            body { padding: 0; background: white; }
+            .login-container, .action-btns { display: none !important; }
+            .page-container { display: block !important; width: 100%; margin: 0; }
+            .admit-card-page { border: none !important; height: 296mm; page-break-after: always; box-shadow: none !important; }
+            .watermark { opacity: 0.1 !important; }
         }
     </style>
 </head>
@@ -131,96 +96,88 @@
 
     <div class="login-container" id="loginWrapper">
         <div class="login-box">
-            <img src="logo.png" class="logo-login" alt="Logo">
-            <h2>MVM NALBARI</h2>
-            <p>Examination Portal 2025-26</p>
-            <form id="admitCardForm">
-                <div class="input-group">
-                    <i class="fa-solid fa-id-card"></i>
-                    <input id="studentID" placeholder="Student ID" required type="text">
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-calendar"></i>
-                    <input id="dob" required type="date">
-                </div>
-                <button id="submitButton" type="submit">Access Admit Card</button>
+            <img src="logo.png" class="logo-login" alt="School Logo">
+            <h2 style="color: var(--primary-blue); font-family: 'Montserrat'; font-weight: 800;">MVM NALBARI</h2>
+            <p style="color: #666; margin-bottom: 25px;">Enter credentials to download admit card</p>
+            <form id="loginForm">
+                <div class="input-group"><i class="fa-solid fa-id-card"></i><input id="sid" placeholder="Student ID" required></div>
+                <div class="input-group"><i class="fa-solid fa-calendar"></i><input id="dob" type="date" required></div>
+                <button type="submit" id="subBtn">Fetch Admit Card</button>
             </form>
-            <p id="errorMessage" style="color: red; margin-top: 15px; font-weight: 500;"></p>
+            <p id="errorMsg" style="color: var(--accent-red); font-size: 14px; margin-top: 15px; font-weight: bold;"></p>
         </div>
     </div>
 
     <div class="page-container" id="admitCardContainer">
-        <div id="admitCardContent"></div>
+        <div id="renderTarget"></div>
     </div>
 
-    <div class="action-buttons" id="actionButtons">
-        <button class="btn btn-pdf" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
-        <button class="btn btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Now</button>
+    <div class="action-btns" id="actionArea">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Admit Card</button>
     </div>
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzPWWCpUt5GPQ1rEGeAIgt79zJMWCZlXbKx_0PvrXDUHJ5QMY1rlC9hhKS5C4KLNCJz/exec';
 
-        document.getElementById('admitCardForm').addEventListener('submit', async function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const id = document.getElementById('studentID').value.trim().toUpperCase();
+            const sid = document.getElementById('sid').value.trim().toUpperCase();
             const dob = document.getElementById('dob').value;
-            const btn = document.getElementById('submitButton');
+            const btn = document.getElementById('subBtn');
             
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Locating Record...';
 
             try {
-                const response = await fetch(API_URL);
-                const result = await response.json();
-                
-                const student = result.data.find(s => 
-                    String(s['Student ID']).toUpperCase() === id && 
-                    String(s['Date of Birth']) === dob
-                );
+                const res = await fetch(API_URL);
+                const json = await res.json();
+                const student = json.data.find(s => String(s['Student ID']).toUpperCase() === sid && String(s['Date of Birth']) === dob);
 
                 if (student) {
-                    renderAdmitCard(student);
+                    generateAdmitCard(student);
                     document.getElementById('loginWrapper').style.display = 'none';
                     document.getElementById('admitCardContainer').style.display = 'block';
-                    document.getElementById('actionButtons').style.display = 'flex';
+                    document.getElementById('actionArea').style.display = 'flex';
                 } else {
-                    document.getElementById('errorMessage').textContent = 'Invalid ID or Date of Birth.';
+                    document.getElementById('errorMsg').textContent = 'Error: ID or Date of Birth does not match our records.';
                 }
-            } catch (err) {
-                document.getElementById('errorMessage').textContent = 'System Error. Try again later.';
+            } catch (error) {
+                document.getElementById('errorMsg').textContent = 'Server Error: Unable to reach the database.';
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Access Admit Card';
+                btn.textContent = 'Fetch Admit Card';
             }
         });
 
-        function renderAdmitCard(data) {
-            const container = document.getElementById('admitCardContent');
-            
-            let scheduleRows = '';
-            for (let i = 1; i <= 10; i++) {
-                if (data[`Date ${i}`]) {
-                    scheduleRows += `<tr>
-                        <td>${data[`Date ${i}`]}</td>
+        function generateAdmitCard(data) {
+            let examRows = '';
+            for(let i=1; i<=10; i++) {
+                if(data[`Date ${i}`]) {
+                    // Convert original date string to full ISO format as requested
+                    const isoDateString = new Date(data[`Date ${i}`]).toISOString(); 
+                    
+                    examRows += `<tr>
+                        <td>${isoDateString}</td>
                         <td>${data[`Paper ${i}`]}</td>
                         <td></td><td></td>
                     </tr>`;
                 }
             }
 
-            const html = `
+            const admitHTML = `
                 <div class="admit-card-page">
-                    <div class="watermark">MVM NALBARI</div>
-                    <header class="header-section">
-                        <div class="school-name">MAHARISHI VIDYA MANDIR, NALBARI</div>
-                        <div class="cbse-badge">CBSE AFFILIATED CURRICULUM</div>
-                        <div style="font-size: 13px; font-weight: 500;">BATIRAM ROAD, NALBARI, ASSAM - 781335</div>
-                        <div class="admit-title">ADMIT CARD</div>
-                        <div style="font-weight: 700; color: var(--primary-blue);">FINAL EXAMINATION SESSION 2025-2026</div>
+                    <div class="watermark"></div>
+                    <header class="header">
+                        <img src="logo.png" class="logo-header">
+                        <div class="header-text">
+                            <h1>MAHARISHI VIDYA MANDIR, NALBARI</h1>
+                            <p>CBSE AFFILIATION NO: XXXXXXX | BATIRAM ROAD, NALBARI, ASSAM-781335</p>
+                            <div class="admit-label">ADMIT CARD</div>
+                            <p style="font-weight: 700; color: var(--primary-blue); font-size: 16px;">FINAL EXAMINATION SESSION: 2025-2026</p>
+                        </div>
                     </header>
 
-                    <div class="content-grid">
+                    <div class="content-body">
                         <div class="details-pane">
                             <table class="details-table">
                                 <tr><td class="label">Student Name</td><td class="value">${data['Student Name']}</td></tr>
@@ -232,56 +189,39 @@
                         </div>
                         <div class="photo-pane">
                             <div class="photo-box">
-                                ${data['Photo URL'] ? `<img src="${data['Photo URL']}">` : 'Affix Passport Photo'}
+                                ${data['Photo URL'] ? `<img src="${data['Photo URL']}">` : 'Affix recent passport size photograph in school uniform'}
                             </div>
                         </div>
                     </div>
 
-                    <div class="barcode-container">
-                        <div class="barcode-font">${data['Student ID']}</div>
-                        <div style="font-size: 11px; font-weight: bold; margin-top: 5px;">SCAN BARCODE FOR VERIFICATION</div>
+                    <div class="barcode-area">
+                        <span class="barcode-font">${data['Student ID']}</span>
+                        <div class="barcode-id">VERIFICATION ID: ${data['Student ID']}</div>
                     </div>
 
                     <table class="exam-table">
                         <thead>
-                            <tr><th>Date</th><th>Subject / Paper</th><th>Student Sig.</th><th>Invigilator Sig.</th></tr>
+                            <tr><th>Examination Date & Time (ISO)</th><th>Subject / Paper</th><th>Student Signature</th><th>Invigilator Signature</th></tr>
                         </thead>
-                        <tbody>${scheduleRows}</tbody>
+                        <tbody>${examRows}</tbody>
                     </table>
 
                     <footer class="footer-sigs">
-                        <div class="sig-block">
-                            ${data['Signature URL'] ? `<img src="${data['Signature URL']}" class="sig-img">` : '<div style="height:50px"></div>'}
+                        <div class="sig-box">
+                            ${data['Signature URL'] ? `<img src="${data['Signature URL']}" class="sig-img">` : '<div style="height:65px"></div>'}
                             <div class="sig-line">Student's Signature</div>
                         </div>
-                        <div class="sig-block">
-                            <div style="height:50px"></div>
-                            <div class="sig-line">Class Teacher</div>
-                        </div>
-                        <div class="sig-block">
+                        <div class="sig-box">
                             <img src="sign.png" class="sig-img">
                             <div class="sig-line">Principal's Signature</div>
                         </div>
                     </footer>
-                </div>
-
-                <div class="instructions-page" style="margin-top: 20px;">
-                    <div class="watermark">INSTRUCTIONS</div>
-                    <h3 style="color: var(--accent-red); text-align: center; text-decoration: underline;">EXAMINATION GUIDELINES</h3>
-                    <ol class="instructions-list">
-                        <li><strong>Mandatory Carry:</strong> Students must carry this original printed Admit Card to every examination.</li>
-                        <li><strong>Reporting Time:</strong> Arrive at the examination center at least 20 minutes before the scheduled time.</li>
-                        <li><strong>Prohibited Items:</strong> Mobile phones, smartwatches, and any electronic gadgets are strictly banned.</li>
-                        <li><strong>Discipline:</strong> Any form of malpractice or unfair means will lead to immediate disqualification.</li>
-                        <li><strong>Verification:</strong> Ensure the photograph and barcode are clearly visible.</li>
-                        <li><strong>Uniform:</strong> Students must be in full school uniform during all examination days.</li>
-                    </ol>
-                    <div style="margin-top: auto; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 10px;">
-                        Generated on: ${new Date().toLocaleString()} | Computer Generated Document
+                    <div style="text-align: center; margin-top: 20px; font-size: 10px; color: #777;">
+                        This is a computer generated document. Generated on: ${new Date().toLocaleString()}
                     </div>
                 </div>
             `;
-            container.innerHTML = html;
+            document.getElementById('renderTarget').innerHTML = admitHTML;
         }
     </script>
 </body>
