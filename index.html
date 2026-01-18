@@ -19,6 +19,7 @@
 
         body { font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; background: #e9ecef; display: flex; flex-direction: column; align-items: center; }
 
+        /* Login Layout */
         .login-container { width: 100%; max-width: 400px; margin-top: 50px; }
         .login-box { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid var(--school-blue); }
         .logo-login { width: 80px; margin-bottom: 20px; }
@@ -27,17 +28,18 @@
         .login-box input { width: 100%; padding: 12px 12px 12px 45px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         .login-box button { width: 100%; padding: 14px; background: var(--school-blue); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
 
+        /* Page Display Control */
         .page-container { width: 210mm; display: none; margin-top: 20px; }
-        
         .admit-card-page, .instructions-page {
             background: white; padding: 12mm; min-height: 297mm; box-sizing: border-box;
             border: 3px solid var(--school-blue); position: relative; display: flex;
             flex-direction: column; margin-bottom: 20px; overflow: hidden;
         }
 
+        /* Fixed PDF Watermark */
         .watermark-img {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 140mm; opacity: 0.22; z-index: 0; pointer-events: none;
+            width: 140mm; opacity: 0.25; z-index: 0; pointer-events: none;
         }
 
         .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2.5px solid #000; padding-bottom: 10px; margin-bottom: 20px; position: relative; z-index: 1; }
@@ -48,6 +50,7 @@
         .header-text .admit-title { color: var(--admit-green); font-size: 24px; font-weight: 800; margin: 5px 0; }
         .header-text .exam-title { color: var(--exam-red); font-size: 20px; font-weight: 700; margin: 0; }
 
+        /* Table & Student Details */
         .content-flex { display: flex; gap: 20px; margin-top: 15px; position: relative; z-index: 1; }
         .details-area { flex: 1; }
         .details-table { width: 100%; border-collapse: collapse; }
@@ -71,25 +74,28 @@
         .exam-table th { background: var(--table-head); color: white; padding: 12px; font-size: 13px; border: 1px solid #000; }
         .exam-table td { border: 1px solid #000; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; }
 
-        .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-top: 35px; position: relative; z-index: 1; }
+        /* Signature & Seal Stacking */
+        .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-top: 45px; position: relative; z-index: 1; }
         .sig-item { text-align: center; width: 220px; position: relative; }
-        .sig-img { height: 65px; margin-bottom: 5px; object-fit: contain; position: relative; z-index: 3; }
+        .sig-img { height: 65px; margin-bottom: 5px; object-fit: contain; position: relative; z-index: 5; }
         
-        /* Local Stamp CSS Fix */
+        /* High Priority Stamp Overlay */
         .stamp-official {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            width: 110px; height: 110px; opacity: 1 !important; z-index: 4 !important; pointer-events: none;
-            display: block;
+            position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 120px; z-index: 100 !important; pointer-events: none;
+            display: block; opacity: 1 !important;
         }
 
-        .sig-line { border-top: 2px solid #000; padding-top: 5px; font-weight: bold; font-size: 14px; color: #000; }
+        .sig-line { border-top: 2px solid #000; padding-top: 5px; font-weight: bold; font-size: 14px; color: #000; position: relative; z-index: 1; }
 
+        /* Action UI */
         .btn-area { display: none; gap: 10px; margin: 20px 0; }
         .print-btn { padding: 15px 35px; background: var(--school-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
 
-        .verification-sec { text-align: center; margin-top: 15px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1;}
-        .qr-container { width: 60px; height: 60px; margin-bottom: 5px; }
-        .security-footer { font-size: 11px; color: #000; letter-spacing: 0.5px; font-weight: bold; }
+        /* Secure QR Placement */
+        .verification-sec { text-align: center; margin-top: 15px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 5;}
+        .qr-canvas-holder { width: 75px; height: 75px; margin-bottom: 8px; background: white; border: 1px solid #ddd; }
+        .security-footer { font-size: 12px; color: #000; letter-spacing: 0.5px; font-weight: 800; text-transform: uppercase; }
         .page-timestamp { text-align: center; font-size: 11px; font-weight: bold; padding-top: 10px; color: #000; position: relative; z-index: 1; border-top: 1px solid #000; margin-top: 15px;}
 
         @media print {
@@ -98,8 +104,8 @@
             .login-container, .btn-area { display: none !important; }
             .page-container { display: block !important; width: 100%; margin: 0; }
             .admit-card-page, .instructions-page { border: 1px solid #000 !important; height: 296mm; page-break-after: always; box-shadow: none; }
-            .watermark-img { opacity: 0.18 !important; }
-            .stamp-official { opacity: 1 !important; }
+            .watermark-img { opacity: 0.20 !important; }
+            .stamp-official { opacity: 1 !important; visibility: visible !important; }
         }
     </style>
 </head>
@@ -108,11 +114,11 @@
     <div class="login-container" id="loginWrapper">
         <div class="login-box">
             <img src="logo.png" class="logo-login">
-            <h2 style="color: var(--school-blue);">Admit Portal</h2>
+            <h2 style="color: var(--school-blue);">Admit Access</h2>
             <form id="loginForm">
                 <div class="input-group"><i class="fa-solid fa-id-card"></i><input id="sid" placeholder="Student ID" required></div>
                 <div class="input-group"><i class="fa-solid fa-calendar"></i><input id="dob" type="date" required></div>
-                <button type="submit" id="btnS">Fetch Admit Card</button>
+                <button type="submit" id="btnS">Fetch Secure Admit</button>
             </form>
             <p id="msg" style="color: red; font-size: 14px; margin-top: 10px;"></p>
         </div>
@@ -137,26 +143,26 @@
             const btn = document.getElementById('btnS');
             
             btn.disabled = true;
-            btn.textContent = 'Authenticating...';
+            btn.textContent = 'Verifying Record...';
 
             try {
                 const res = await fetch(API);
                 const json = await res.json();
-                const s = json.data.find(x => String(x['Student ID']).toUpperCase() === sid && String(x['Date of Birth']) === dob);
+                const student = json.data.find(x => String(x['Student ID']).toUpperCase() === sid && String(x['Date of Birth']) === dob);
 
-                if (s) {
-                    renderCard(s);
+                if (student) {
+                    renderCard(student);
                     document.getElementById('loginWrapper').style.display = 'none';
                     document.getElementById('admitCardContainer').style.display = 'block';
                     document.getElementById('actionArea').style.display = 'flex';
                 } else {
-                    document.getElementById('msg').textContent = 'Invalid credentials.';
+                    document.getElementById('msg').textContent = 'Validation error: Record mismatch.';
                 }
             } catch (err) {
-                document.getElementById('msg').textContent = 'Network error.';
+                document.getElementById('msg').textContent = 'Portal connection failed.';
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Fetch Admit Card';
+                btn.textContent = 'Fetch Secure Admit';
             }
         });
 
@@ -172,10 +178,10 @@
             const barcodeID = `*${data['Student ID']}*`;
             const securityHash = btoa(data['Student ID'] + now.getTime()).substring(0, 16).toUpperCase();
             
-            let rows = '';
+            let examRows = '';
             for(let i=1; i<=10; i++) {
                 if(data[`Date ${i}`]) {
-                    rows += `<tr>
+                    examRows += `<tr>
                         <td>${formatDate(data[`Date ${i}`])}</td>
                         <td>${data[`Paper ${i}`]}</td>
                         <td></td><td></td>
@@ -183,7 +189,7 @@
                 }
             }
 
-            const html = `
+            const htmlContent = `
                 <div class="admit-card-page">
                     <img src="logo.png" class="watermark-img">
                     <header class="header">
@@ -222,7 +228,7 @@
                         <thead>
                             <tr><th>Date</th><th>Subject / Paper</th><th>Student Sig.</th><th>Invigilator Sig.</th></tr>
                         </thead>
-                        <tbody>${rows}</tbody>
+                        <tbody>${examRows}</tbody>
                     </table>
 
                     <footer class="footer-sigs">
@@ -237,7 +243,7 @@
                     </footer>
                     
                     <div class="verification-sec">
-                        <div id="qr-container-p1" class="qr-container"></div>
+                        <div id="qr-target-1" class="qr-canvas-holder"></div>
                         <div class="security-footer">VERIFIED VIA MVMN PRINCIPAL OFFICE</div>
                     </div>
                     <div class="page-timestamp">Issued: ${issuedTime}</div>
@@ -247,27 +253,29 @@
                     <img src="logo.png" class="watermark-img">
                     <h2 style="color: var(--school-blue); text-align: center; text-decoration: underline;">EXAMINATION INSTRUCTIONS</h2>
                     <ul style="line-height: 2.2; font-size: 16px; margin-top: 20px; color: #000; font-weight: 500;">
-                        <li><strong>Authentication:</strong> This document is digitally verified. Scan the QR code to check the secure session hash.</li>
-                        <li><strong>Reporting:</strong> Students must report 15 minutes prior to the examination.</li>
-                        <li><strong>Mandatory Carry:</strong> Entry is strictly prohibited without this physical admit card.</li>
-                        <li><strong>Prohibited Items:</strong> No smartphones, smartwatches, or calculators allowed inside.</li>
-                        <li><strong>Discipline:</strong> Any form of malpractice results in immediate disqualification.</li>
-                        <li><strong>Uniform:</strong> Full school uniform is required for all candidates.</li>
+                        <li><strong>Security Verification:</strong> This admit card is authenticated via a dynamic QR session hash. Scan to verify session integrity.</li>
+                        <li><strong>Reporting:</strong> Reach the school 15 minutes before reporting time.</li>
+                        <li><strong>Mandatory Carry:</strong> Without this secure physical admit card, entry is strictly barred.</li>
+                        <li><strong>Electronics:</strong> Possession of smartphones or smartwatches results in immediate disqualification.</li>
+                        <li><strong>Conduct:</strong> Any form of unfair means will lead to cancellation of candidature.</li>
+                        <li><strong>Uniform:</strong> Candidates must be in full official school uniform.</li>
                     </ul>
                     <div style="margin-top: auto;">
                         <div class="verification-sec">
-                            <div id="qr-container-p2" class="qr-container"></div>
+                            <div id="qr-target-2" class="qr-canvas-holder"></div>
                             <div class="security-footer">VERIFIED VIA MVMN PRINCIPAL OFFICE</div>
                         </div>
                         <div class="page-timestamp">Issued: ${issuedTime}</div>
                     </div>
                 </div>
             `;
-            document.getElementById('renderArea').innerHTML = html;
+            document.getElementById('renderArea').innerHTML = htmlContent;
 
-            // Generate QR Codes after rendering
-            new QRCode(document.getElementById("qr-container-p1"), { text: securityHash, width: 60, height: 60 });
-            new QRCode(document.getElementById("qr-container-p2"), { text: securityHash, width: 60, height: 60 });
+            // Secure QR generation with frame alignment
+            window.requestAnimationFrame(() => {
+                new QRCode(document.getElementById("qr-target-1"), { text: securityHash, width: 75, height: 75 });
+                new QRCode(document.getElementById("qr-target-2"), { text: securityHash, width: 75, height: 75 });
+            });
         }
     </script>
 </body>
