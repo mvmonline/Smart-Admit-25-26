@@ -19,22 +19,30 @@
 
         body { font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; background: #e9ecef; display: flex; flex-direction: column; align-items: center; }
 
-        /* --- Updated Login Interface with Branding --- */
-        .login-container { width: 100%; max-width: 450px; margin-top: 30px; }
-        .login-branding { text-align: center; margin-bottom: 20px; }
-        .login-branding h2 { color: var(--school-blue); margin: 0; font-family: 'Montserrat'; font-weight: 800; font-size: 24px; }
-        .login-branding h3 { color: var(--school-blue); margin: 5px 0; font-family: 'Montserrat'; font-weight: 700; font-size: 20px; }
-        .login-branding .admit-label { color: var(--school-blue); font-weight: 800; text-decoration: underline; margin-top: 10px; font-size: 18px; }
+        /* --- Redesigned Login Interface --- */
+        .login-container { width: 100%; max-width: 500px; margin-top: 30px; text-align: center; }
+        .logo-login { width: 110px; margin-bottom: 15px; }
+        .school-title-header { color: var(--school-blue); font-family: 'Montserrat'; font-weight: 800; font-size: 24px; margin: 0 0 10px 0; text-transform: uppercase; }
+        .admit-download-label { color: var(--school-blue); font-family: 'Montserrat'; font-weight: 800; font-size: 32px; margin-bottom: 30px; letter-spacing: 1px; }
         
-        .login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.12); text-align: center; }
-        .logo-login { width: 90px; margin-bottom: 15px; }
-        .login-header-text { color: var(--admit-green); font-family: 'Montserrat'; font-weight: 800; font-size: 22px; margin-bottom: 25px; }
-        
+        .login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
         .input-group { position: relative; margin-bottom: 20px; }
         .input-group i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #888; }
-        .login-box input { width: 100%; padding: 14px 14px 14px 50px; border: 2px solid #e1e5ee; border-radius: 12px; font-size: 16px; box-sizing: border-box; }
-        .download-btn { width: 100%; padding: 16px; background: var(--admit-green); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 17px; text-transform: uppercase; }
+        .login-box input { width: 100%; padding: 14px 14px 14px 50px; border: 2px solid #e1e5ee; border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: 0.3s ease; }
+        .login-box input:focus { border-color: var(--school-blue); outline: none; background: #f8faff; }
         
+        .download-btn { 
+            width: 100%; padding: 18px; background: var(--admit-green); color: white; 
+            border: none; border-radius: 12px; font-weight: 800; cursor: pointer; 
+            font-size: 20px; text-transform: uppercase; transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,100,0,0.3);
+        }
+        .download-btn:hover { background: #004d00; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,100,0,0.4); }
+        
+        #msg { margin-top: 20px; font-weight: 700; font-size: 16px; }
+        .loading-state { color: #2196f3; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .error-state { color: #d32f2f; }
+
         /* --- Admit Card Layout --- */
         .page-container { width: 210mm; display: none; margin-top: 20px; }
         .admit-card-page, .instructions-page { background: white; padding: 12mm; min-height: 297mm; box-sizing: border-box; border: 3px solid var(--school-blue); position: relative; display: flex; flex-direction: column; margin-bottom: 20px; overflow: hidden; }
@@ -54,7 +62,7 @@
         .details-table { width: 100%; border-collapse: collapse; }
         .details-table td { padding: 11px 5px; border-bottom: 1px solid #ccc; font-size: 16px; color: #000; }
         .lbl { font-weight: 800; color: var(--school-blue); width: 160px; }
-        .val { font-weight: 800; } /* Bolded data as requested */
+        .val { font-weight: 800; } 
 
         .photo-area { text-align: center; width: 160px; }
         .photo-box { width: 150px; height: 180px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #000; font-weight: bold; padding: 5px; text-align: center; background: #fff; }
@@ -90,18 +98,21 @@
 <body>
 
     <div class="login-container" id="loginWrapper">
-        <div class="login-branding">
-            <h2>Maharishi Vidya Mandir,</h2>
-            <h3>Nalbari</h3>
-            <div class="admit-label">ADMIT CARD</div>
-        </div>
+        <img src="logo.png" class="logo-login" alt="MVM Logo">
+        <h1 class="school-title-header">MAHARISHI VIDYA MANDIR, NALBARI</h1>
+        <h2 class="admit-download-label">ADMIT CARD DOWNLOAD</h2>
+        
         <div class="login-box">
-            <img src="logo.png" class="logo-login">
-            <div class="login-header-text">DOWNLOAD ADMIT CARD</div>
             <form id="loginForm">
-                <div class="input-group"><i class="fa-solid fa-id-badge"></i><input id="sid" placeholder="Student ID" required type="text"></div>
-                <div class="input-group"><i class="fa-solid fa-calendar-check"></i><input id="dob" type="date" required></div>
-                <button type="submit" class="download-btn" id="subBtn">ACCESS DOCUMENT</button>
+                <div class="input-group">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <input id="sid" placeholder="Enter Student ID" required type="text">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <input id="dob" type="date" required>
+                </div>
+                <button type="submit" class="download-btn" id="subBtn">DOWNLOAD</button>
             </form>
             <div id="msg"></div>
         </div>
@@ -124,24 +135,26 @@
             const dob = document.getElementById('dob').value;
             const btn = document.getElementById('subBtn');
             const msg = document.getElementById('msg');
+            
             btn.disabled = true;
-            msg.innerHTML = '<div style="color:#2196f3; font-weight:700; margin-top:15px;"><i class="fa-solid fa-circle-notch fa-spin"></i> Please wait...</div>';
+            msg.innerHTML = '<div class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Please Wait.....</div>';
 
             try {
                 const res = await fetch(API);
                 const json = await res.json();
                 const student = json.data.find(x => String(x['Student ID']).toUpperCase() === sid && String(x['Date of Birth']) === dob);
+                
                 if (student) {
                     renderCard(student);
                     document.getElementById('loginWrapper').style.display = 'none';
                     document.getElementById('admitCardContainer').style.display = 'block';
                     document.getElementById('actionArea').style.display = 'flex';
                 } else {
-                    msg.innerHTML = '<span style="color:#d32f2f; font-weight:700;">Wrong Student ID or Date of Birth</span>';
+                    msg.innerHTML = '<span class="error-state">Wrong Student ID or Date of Birth</span>';
                     btn.disabled = false;
                 }
             } catch (err) {
-                msg.innerHTML = '<span style="color:#d32f2f; font-weight:700;">Connection error. Try again.</span>';
+                msg.innerHTML = '<span class="error-state">Connection error. Please try again later.</span>';
                 btn.disabled = false;
             }
         });
