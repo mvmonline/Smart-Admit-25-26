@@ -2,204 +2,287 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MVM Nalbari - Smart Admit Card System</title>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVM Nalbari - Professional Admit Card</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500;700&family=Libre+Barcode+128&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #e0e0e0; margin: 0; padding: 20px; }
-        .page-container { width: 210mm; margin: auto; }
-        
-        /* Admit Card Layout */
-        .admit-card { 
-            background: white; 
-            padding: 40px; 
-            margin-bottom: 30px; 
-            border: 2px solid #000; 
-            position: relative; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            page-break-after: always;
+        :root {
+            --primary-blue: #1a237e;
+            --secondary-blue: #0d47a1;
+            --accent-red: #d32f2f;
+            --text-dark: #212121;
+            --border-color: #c5cae9;
         }
 
-        /* Watermark */
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            opacity: 0.08;
-            pointer-events: none;
-        }
-
-        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
-        .header h1 { margin: 0; font-size: 26px; color: #1a237e; text-transform: uppercase; }
-        .header p { margin: 5px 0; font-weight: bold; font-size: 14px; }
-        .exam-banner { background: #f0f0f0; padding: 5px; margin: 10px 0; font-weight: bold; border: 1px solid #ccc; }
-
-        .main-content { display: flex; justify-content: space-between; margin-top: 20px; }
-        .info-table { width: 75%; border-collapse: collapse; }
-        .info-table td { padding: 8px 0; font-size: 15px; vertical-align: top; }
-        .label { font-weight: bold; width: 140px; }
-
-        .photo-box { 
-            width: 140px; 
-            height: 165px; 
-            border: 1px solid #000; 
-            text-align: center; 
-            font-size: 11px; 
-            background: #fafafa;
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+        }
+
+        /* Login Section Styles */
+        .login-container { width: 100%; max-width: 450px; margin-top: 50px; }
+        .login-box {
+            background: #ffffff; padding: 40px; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center;
+            border-top: 5px solid var(--primary-blue);
+        }
+        .logo-login { width: 100px; margin-bottom: 20px; }
+        .login-box h2 { font-family: 'Montserrat', sans-serif; color: var(--primary-blue); margin-bottom: 10px; font-weight: 800; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #757575; }
+        .login-box input {
+            width: 100%; padding: 15px 15px 15px 50px; border: 2px solid #eee;
+            border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: 0.3s;
+        }
+        .login-box input:focus { border-color: var(--primary-blue); outline: none; background: #f8f9ff; }
+        .login-box button {
+            width: 100%; background: var(--primary-blue); color: white;
+            padding: 16px; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
+            transition: 0.3s;
+        }
+        .login-box button:hover { background: var(--secondary-blue); transform: translateY(-2px); }
+
+        /* Admit Card Layout */
+        .page-container { width: 210mm; display: none; margin: 20px auto; }
+        
+        .admit-card-page, .instructions-page {
+            background: white;
+            padding: 15mm;
+            box-sizing: border-box;
+            position: relative;
+            height: 297mm;
+            border: 12px solid var(--primary-blue);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 120px; font-weight: 900; color: rgba(26, 35, 126, 0.05);
+            z-index: 0; white-space: nowrap; pointer-events: none;
+        }
+
+        .header-section {
+            text-align: center; border-bottom: 4px double var(--primary-blue);
+            padding-bottom: 15px; margin-bottom: 25px; position: relative; z-index: 1;
+        }
+
+        .school-name { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 800; color: var(--primary-blue); margin: 5px 0; }
+        .cbse-badge { background: var(--primary-blue); color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; display: inline-block; margin: 5px 0; }
+        .admit-title { font-size: 32px; color: var(--accent-red); font-weight: 800; text-decoration: underline; margin: 10px 0; }
+
+        .content-grid { display: grid; grid-template-columns: 1fr 180px; gap: 30px; position: relative; z-index: 1; }
+        
+        .details-table { width: 100%; border-collapse: collapse; }
+        .details-table td { padding: 10px 5px; border-bottom: 1px dashed #ccc; }
+        .label { font-weight: bold; color: var(--primary-blue); width: 150px; font-size: 15px; }
+        .value { font-size: 17px; font-weight: 700; color: #333; }
+
+        .photo-box {
+            width: 160px; height: 190px; border: 3px solid var(--primary-blue);
+            border-radius: 8px; overflow: hidden; background: #fff;
+            display: flex; align-items: center; justify-content: center; text-align: center; font-size: 12px;
         }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Exam Table */
-        .exam-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
-        .exam-table th, .exam-table td { border: 1px solid #000; padding: 10px; text-align: center; font-size: 14px; }
-        .exam-table th { background-color: #f9f9f9; }
+        .barcode-container {
+            text-align: center; margin: 25px 0; padding: 15px;
+            background: #f8f9ff; border: 1px solid var(--border-color); border-radius: 10px;
+        }
+        .barcode-font { font-family: 'Libre Barcode 128', cursive; font-size: 60px; line-height: 1; color: #000; }
 
-        /* Signatures */
-        .footer-sigs { display: flex; justify-content: space-between; margin-top: 50px; }
-        .sig-box { width: 220px; text-align: center; border-top: 1px solid #000; padding-top: 5px; font-weight: bold; font-size: 13px; }
-        .sig-box img { height: 45px; margin-bottom: -5px; }
+        .exam-table { width: 100%; border-collapse: collapse; margin-top: 20px; z-index: 1; position: relative; }
+        .exam-table th { background: var(--primary-blue); color: white; padding: 12px; font-size: 14px; }
+        .exam-table td { border: 1px solid #ddd; padding: 10px; text-align: center; height: 40px; }
 
-        /* Instructions */
-        .instructions { margin-top: 30px; font-size: 11px; line-height: 1.5; border-top: 1px solid #eee; padding-top: 15px; }
-        .instructions h4 { margin: 0 0 5px 0; text-decoration: underline; }
+        .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-bottom: 20px; }
+        .sig-block { text-align: center; width: 200px; }
+        .sig-line { border-top: 1px solid #333; margin-top: 10px; font-weight: bold; color: var(--primary-blue); padding-top: 5px; }
+        .sig-img { height: 50px; object-fit: contain; }
 
-        .barcode-svg { display: block; margin: 15px auto; }
-        
-        .no-print { text-align: center; margin-bottom: 20px; }
-        .print-btn { padding: 12px 30px; background: #1a237e; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .instructions-list { font-size: 14px; line-height: 1.8; color: #333; padding-left: 20px; }
+        .instructions-list li { margin-bottom: 10px; }
+
+        .action-buttons { display: none; gap: 15px; margin: 20px 0; }
+        .btn { padding: 15px 30px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 16px; }
+        .btn-print { background: var(--primary-blue); }
+        .btn-pdf { background: #2e7d32; }
 
         @media print {
-            body { background: none; padding: 0; }
-            .no-print { display: none; }
-            .admit-card { box-shadow: none; border: 1px solid #000; margin: 0; }
+            body { background: white; padding: 0; }
+            .login-container, .action-buttons { display: none !important; }
+            .page-container { display: block !important; margin: 0; width: 100%; }
+            .admit-card-page, .instructions-page { border: 8px solid var(--primary-blue) !important; height: 296mm; page-break-after: always; }
         }
     </style>
 </head>
 <body>
 
-    <div class="no-print">
-        <button class="print-btn" onclick="window.print()">Download & Print All Admit Cards</button>
+    <div class="login-container" id="loginWrapper">
+        <div class="login-box">
+            <img src="logo.png" class="logo-login" alt="Logo">
+            <h2>MVM NALBARI</h2>
+            <p>Examination Portal 2025-26</p>
+            <form id="admitCardForm">
+                <div class="input-group">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input id="studentID" placeholder="Student ID" required type="text">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-calendar"></i>
+                    <input id="dob" required type="date">
+                </div>
+                <button id="submitButton" type="submit">Access Admit Card</button>
+            </form>
+            <p id="errorMessage" style="color: red; margin-top: 15px; font-weight: 500;"></p>
+        </div>
     </div>
 
-    <div id="admit-cards-wrapper" class="page-container">
-        <p style="text-align:center;">Synchronizing with Google Sheet...</p>
+    <div class="page-container" id="admitCardContainer">
+        <div id="admitCardContent"></div>
+    </div>
+
+    <div class="action-buttons" id="actionButtons">
+        <button class="btn btn-pdf" onclick="window.print()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+        <button class="btn btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Now</button>
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyhkqZUTi4lGXOAqJJSrBwBJuYz8u3eBVAZGmybOeh6k5EaHMh2E4aMa7OMEHLRyqAczA/exec";
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzPWWCpUt5GPQ1rEGeAIgt79zJMWCZlXbKx_0PvrXDUHJ5QMY1rlC9hhKS5C4KLNCJz/exec';
 
-        async function fetchRecords() {
+        document.getElementById('admitCardForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('studentID').value.trim().toUpperCase();
+            const dob = document.getElementById('dob').value;
+            const btn = document.getElementById('submitButton');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+
             try {
                 const response = await fetch(API_URL);
-                const data = await response.json();
-                const container = document.getElementById('admit-cards-wrapper');
-                container.innerHTML = '';
+                const result = await response.json();
+                
+                const student = result.data.find(s => 
+                    String(s['Student ID']).toUpperCase() === id && 
+                    String(s['Date of Birth']) === dob
+                );
 
-                data.forEach((student, index) => {
-                    // Extracting keys dynamically from your sheet
-                    const name = student["Student Name"] || "N/A";
-                    const father = student["Father's Name"] || "N/A";
-                    const id = student["Student ID"] || "000000";
-                    const className = student["Class"] || "N/A";
-                    const roll = student["Roll No"] || "N/A";
-                    const photo = student["Photo"] || "";
+                if (student) {
+                    renderAdmitCard(student);
+                    document.getElementById('loginWrapper').style.display = 'none';
+                    document.getElementById('admitCardContainer').style.display = 'block';
+                    document.getElementById('actionButtons').style.display = 'flex';
+                } else {
+                    document.getElementById('errorMessage').textContent = 'Invalid ID or Date of Birth.';
+                }
+            } catch (err) {
+                document.getElementById('errorMessage').textContent = 'System Error. Try again later.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Access Admit Card';
+            }
+        });
 
-                    const cardHtml = `
-                        <div class="admit-card">
-                            <img src="https://via.placeholder.com/400?text=MVM+LOGO" class="watermark">
-                            
-                            <div class="header">
-                                <h1>Maharishi Vidya Mandir, Nalbari</h1>
-                                <p>CBSE CURRICULUM • BATIRAM ROAD, NALBARI, PIN-781335</p>
-                                <div class="exam-banner">ADMIT CARD: FINAL EXAMINATION 2025-2026</div>
-                            </div>
+        function renderAdmitCard(data) {
+            const container = document.getElementById('admitCardContent');
+            
+            let scheduleRows = '';
+            for (let i = 1; i <= 10; i++) {
+                if (data[`Date ${i}`]) {
+                    scheduleRows += `<tr>
+                        <td>${data[`Date ${i}`]}</td>
+                        <td>${data[`Paper ${i}`]}</td>
+                        <td></td><td></td>
+                    </tr>`;
+                }
+            }
 
-                            <div class="main-content">
-                                <table class="info-table">
-                                    <tr><td class="label">Student Name</td><td>: ${name}</td></tr>
-                                    <tr><td class="label">Father's Name</td><td>: ${father}</td></tr>
-                                    <tr><td class="label">Student ID</td><td>: ${id}</td></tr>
-                                    <tr><td class="label">Class / Roll No</td><td>: ${className} / ${roll}</td></tr>
-                                </table>
-                                <div class="photo-box">
-                                    ${photo ? `<img src="${photo}">` : 'Affix Recent<br>Photograph'}
-                                </div>
-                            </div>
+            const html = `
+                <div class="admit-card-page">
+                    <div class="watermark">MVM NALBARI</div>
+                    <header class="header-section">
+                        <div class="school-name">MAHARISHI VIDYA MANDIR, NALBARI</div>
+                        <div class="cbse-badge">CBSE AFFILIATED CURRICULUM</div>
+                        <div style="font-size: 13px; font-weight: 500;">BATIRAM ROAD, NALBARI, ASSAM - 781335</div>
+                        <div class="admit-title">ADMIT CARD</div>
+                        <div style="font-weight: 700; color: var(--primary-blue);">FINAL EXAMINATION SESSION 2025-2026</div>
+                    </header>
 
-                            <table class="exam-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Subject / Paper</th>
-                                        <th>Student's Sig.</th>
-                                        <th>Invigilator's Sig.</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>${student["Date 1"] || ""}</td>
-                                        <td>${student["Subject 1"] || ""}</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>${student["Date 2"] || ""}</td>
-                                        <td>${student["Subject 2"] || ""}</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>${student["Date 3"] || ""}</td>
-                                        <td>${student["Subject 3"] || ""}</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
+                    <div class="content-grid">
+                        <div class="details-pane">
+                            <table class="details-table">
+                                <tr><td class="label">Student Name</td><td class="value">${data['Student Name']}</td></tr>
+                                <tr><td class="label">Father's Name</td><td class="value">${data["Father's Name"]}</td></tr>
+                                <tr><td class="label">Student ID</td><td class="value">${data['Student ID']}</td></tr>
+                                <tr><td class="label">Class & Section</td><td class="value">${data['Class']} - ${data['Section']}</td></tr>
+                                <tr><td class="label">Roll Number</td><td class="value">${data['Roll No']}</td></tr>
                             </table>
-
-                            <svg id="barcode-${index}" class="barcode-svg"></svg>
-
-                            <div class="footer-sigs">
-                                <div class="sig-box">Student's Signature</div>
-                                <div class="sig-box">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch_Signature.png"><br>
-                                    Principal's Signature
-                                </div>
-                            </div>
-
-                            <div class="instructions">
-                                <h4>Instructions for Candidates</h4>
-                                1. Carry this card daily. [span_4](start_span)Entry is prohibited without it[span_4](end_span). 
-                                2. [span_5](start_span)Reach school 15 mins before time[span_5](end_span). 
-                                3. [span_6](start_span)Gadgets like smart watches/phones are strictly prohibited[span_6](end_span). 
-                                4. [span_7](start_span)Any misconduct leads to cancellation of candidature[span_7](end_span).
+                        </div>
+                        <div class="photo-pane">
+                            <div class="photo-box">
+                                ${data['Photo URL'] ? `<img src="${data['Photo URL']}">` : 'Affix Passport Photo'}
                             </div>
                         </div>
-                    `;
-                    container.innerHTML += cardHtml;
-                });
+                    </div>
 
-                // Generate Barcodes after HTML is rendered
-                data.forEach((student, index) => {
-                    JsBarcode(`#barcode-${index}`, student["Student ID"] || "00000", {
-                        format: "CODE128",
-                        width: 1.8,
-                        height: 40,
-                        displayValue: true
-                    });
-                });
+                    <div class="barcode-container">
+                        <div class="barcode-font">${data['Student ID']}</div>
+                        <div style="font-size: 11px; font-weight: bold; margin-top: 5px;">SCAN BARCODE FOR VERIFICATION</div>
+                    </div>
 
-            } catch (error) {
-                document.getElementById('admit-cards-wrapper').innerHTML = 
-                    "<div style='color:red; text-align:center;'>Error: Could not connect to the API. Ensure your Web App is deployed as 'Anyone'.</div>";
-            }
+                    <table class="exam-table">
+                        <thead>
+                            <tr><th>Date</th><th>Subject / Paper</th><th>Student Sig.</th><th>Invigilator Sig.</th></tr>
+                        </thead>
+                        <tbody>${scheduleRows}</tbody>
+                    </table>
+
+                    <footer class="footer-sigs">
+                        <div class="sig-block">
+                            ${data['Signature URL'] ? `<img src="${data['Signature URL']}" class="sig-img">` : '<div style="height:50px"></div>'}
+                            <div class="sig-line">Student's Signature</div>
+                        </div>
+                        <div class="sig-block">
+                            <div style="height:50px"></div>
+                            <div class="sig-line">Class Teacher</div>
+                        </div>
+                        <div class="sig-block">
+                            <img src="sign.png" class="sig-img">
+                            <div class="sig-line">Principal's Signature</div>
+                        </div>
+                    </footer>
+                </div>
+
+                <div class="instructions-page" style="margin-top: 20px;">
+                    <div class="watermark">INSTRUCTIONS</div>
+                    <h3 style="color: var(--accent-red); text-align: center; text-decoration: underline;">EXAMINATION GUIDELINES</h3>
+                    <ol class="instructions-list">
+                        <li><strong>Mandatory Carry:</strong> Students must carry this original printed Admit Card to every examination.</li>
+                        <li><strong>Reporting Time:</strong> Arrive at the examination center at least 20 minutes before the scheduled time.</li>
+                        <li><strong>Prohibited Items:</strong> Mobile phones, smartwatches, and any electronic gadgets are strictly banned.</li>
+                        <li><strong>Discipline:</strong> Any form of malpractice or unfair means will lead to immediate disqualification.</li>
+                        <li><strong>Verification:</strong> Ensure the photograph and barcode are clearly visible.</li>
+                        <li><strong>Uniform:</strong> Students must be in full school uniform during all examination days.</li>
+                    </ol>
+                    <div style="margin-top: auto; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 10px;">
+                        Generated on: ${new Date().toLocaleString()} | Computer Generated Document
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
         }
-
-        fetchRecords();
     </script>
 </body>
 </html>
