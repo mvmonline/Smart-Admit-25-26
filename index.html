@@ -21,52 +21,20 @@
 
         /* Login Interface */
         .login-container { width: 100%; max-width: 450px; margin-top: 50px; }
-        .login-box { 
-            background: white; padding: 45px 35px; border-radius: 20px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12); text-align: center; 
-        }
+        .login-box { background: white; padding: 45px 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.12); text-align: center; }
         .logo-login { width: 100px; margin-bottom: 15px; }
         .login-header-text { color: var(--school-blue); font-family: 'Montserrat'; font-weight: 800; font-size: 26px; margin-bottom: 30px; letter-spacing: 1px; }
-        
         .input-group { position: relative; margin-bottom: 20px; }
         .input-group i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #888; font-size: 18px; }
-        .login-box input { 
-            width: 100%; padding: 14px 14px 14px 50px; border: 2px solid #e1e5ee; 
-            border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: 0.3s ease;
-        }
-        .login-box input:focus { border-color: var(--school-blue); outline: none; background: #f8faff; }
+        .login-box input { width: 100%; padding: 14px 14px 14px 50px; border: 2px solid #e1e5ee; border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: 0.3s ease; }
+        .download-btn { width: 100%; padding: 16px; background: var(--admit-green); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 18px; transition: all 0.3s; text-transform: uppercase; }
         
-        .download-btn { 
-            width: 100%; padding: 16px; background: var(--admit-green); color: white; 
-            border: none; border-radius: 12px; font-weight: 800; cursor: pointer; 
-            font-size: 18px; transition: all 0.3s; text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0, 100, 0, 0.2);
-        }
-        .download-btn:hover { background: #004d00; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 100, 0, 0.3); }
-        
-        #msg { font-weight: 700; font-size: 15px; margin-top: 20px; min-height: 20px; }
-        .error-text { color: #d32f2f; }
-        .loading-text { color: #2196f3; display: flex; align-items: center; justify-content: center; gap: 10px; }
-
         /* Admit Card Layout */
         .page-container { width: 210mm; display: none; margin-top: 20px; }
-        
-        .admit-card-page, .instructions-page {
-            background: white; padding: 12mm; min-height: 297mm; box-sizing: border-box;
-            border: 3px solid var(--school-blue); position: relative; display: flex;
-            flex-direction: column; margin-bottom: 20px; overflow: hidden;
-        }
+        .admit-card-page, .instructions-page { background: white; padding: 12mm; min-height: 297mm; box-sizing: border-box; border: 3px solid var(--school-blue); position: relative; display: flex; flex-direction: column; margin-bottom: 20px; overflow: hidden; }
 
-        /* Tiled Stamp Watermark Effect */
-        .page-background-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('stemp.png');
-            background-repeat: repeat;
-            background-size: 120px 120px;
-            opacity: 0.08;
-            z-index: 0;
-            pointer-events: none;
-        }
+        /* Brightened Tiled Watermark */
+        .page-background-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('stemp.png'); background-repeat: repeat; background-size: 130px 130px; opacity: 0.15; z-index: 0; pointer-events: none; }
 
         .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2.5px solid #000; padding-bottom: 10px; margin-bottom: 20px; position: relative; z-index: 1; }
         .logo-h { width: 90px; height: 90px; object-fit: contain; }
@@ -83,15 +51,12 @@
         .lbl { font-weight: bold; color: var(--school-blue); width: 150px; }
         .val { font-weight: 700; }
 
+        /* Photo Area & Adjusted Timestamp */
         .photo-area { text-align: center; width: 160px; }
-        .photo-box { 
-            width: 150px; height: 180px; border: 2px solid #000; 
-            display: flex; align-items: center; justify-content: center;
-            font-size: 10px; color: #000; font-weight: bold; padding: 5px; text-align: center; background: #fff;
-        }
+        .photo-box { width: 150px; height: 180px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #000; font-weight: bold; padding: 5px; text-align: center; background: #fff; }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .issued-under-photo { font-size: 9px; font-weight: bold; color: #000; margin-top: 5px; }
 
-        /* Barcode Section Adjusted */
         .barcode-section { text-align: center; margin: 15px 0; position: relative; z-index: 1; }
         .barcode-disp { font-family: 'Libre Barcode 128', cursive; font-size: 70px; color: #000; line-height: 1; }
         .hash-disp { font-weight: 800; font-size: 14px; margin-top: -5px; color: #000; letter-spacing: 1px; }
@@ -103,11 +68,11 @@
         .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-top: 45px; position: relative; z-index: 1; }
         .sig-item { text-align: center; width: 230px; position: relative; }
         .sig-img { height: 60px; margin-bottom: 5px; object-fit: contain; position: relative; z-index: 5; }
-        .sig-line { border-top: 2px solid #000; padding-top: 5px; font-weight: bold; font-size: 14px; color: #000; position: relative; z-index: 1; }
+        .sig-line { border-top: 2px solid #000; padding-top: 5px; font-weight: bold; font-size: 14px; color: #000; }
         
         .btn-area { display: none; gap: 10px; margin: 20px 0; }
         .print-btn { padding: 15px 35px; background: var(--school-blue); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        .page-timestamp { text-align: center; font-size: 11px; font-weight: bold; padding-top: 10px; color: #000; position: relative; z-index: 1; border-top: 1px solid #000; margin-top: 15px;}
+        .page-timestamp-footer { text-align: center; font-size: 11px; font-weight: bold; padding-top: 10px; color: #000; position: relative; z-index: 1; border-top: 1px solid #000; margin-top: 15px;}
 
         @media print {
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -122,17 +87,11 @@
 
     <div class="login-container" id="loginWrapper">
         <div class="login-box">
-            <img src="logo.png" class="logo-login" alt="Logo">
+            <img src="logo.png" class="logo-login">
             <div class="login-header-text">ADMIT CARD</div>
             <form id="loginForm">
-                <div class="input-group">
-                    <i class="fa-solid fa-id-badge"></i>
-                    <input id="sid" placeholder="Student ID" required type="text">
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-calendar-check"></i>
-                    <input id="dob" type="date" required>
-                </div>
+                <div class="input-group"><i class="fa-solid fa-id-badge"></i><input id="sid" placeholder="Student ID" required type="text"></div>
+                <div class="input-group"><i class="fa-solid fa-calendar-check"></i><input id="dob" type="date" required></div>
                 <button type="submit" class="download-btn" id="subBtn">DOWNLOAD ADMIT CARD</button>
             </form>
             <div id="msg"></div>
@@ -156,26 +115,24 @@
             const dob = document.getElementById('dob').value;
             const btn = document.getElementById('subBtn');
             const msg = document.getElementById('msg');
-            
             btn.disabled = true;
-            msg.innerHTML = '<div class="loading-text"><i class="fa-solid fa-circle-notch fa-spin"></i> Please wait...</div>';
+            msg.innerHTML = '<div style="color:#2196f3; font-weight:700;"><i class="fa-solid fa-circle-notch fa-spin"></i> Please wait...</div>';
 
             try {
                 const res = await fetch(API);
                 const json = await res.json();
                 const student = json.data.find(x => String(x['Student ID']).toUpperCase() === sid && String(x['Date of Birth']) === dob);
-
                 if (student) {
                     renderCard(student);
                     document.getElementById('loginWrapper').style.display = 'none';
                     document.getElementById('admitCardContainer').style.display = 'block';
                     document.getElementById('actionArea').style.display = 'flex';
                 } else {
-                    msg.innerHTML = '<span class="error-text">Wrong Student ID or Date of Birth</span>';
+                    msg.innerHTML = '<span style="color:#d32f2f; font-weight:700;">Wrong Student ID or Date of Birth</span>';
                     btn.disabled = false;
                 }
             } catch (err) {
-                msg.innerHTML = '<span class="error-text">Connection error. Please try again.</span>';
+                msg.innerHTML = '<span style="color:#d32f2f; font-weight:700;">Connection error. Try again.</span>';
                 btn.disabled = false;
             }
         });
@@ -195,11 +152,7 @@
             let rows = '';
             for(let i=1; i<=10; i++) {
                 if(data[`Date ${i}`]) {
-                    rows += `<tr>
-                        <td>${formatDate(data[`Date ${i}`])}</td>
-                        <td>${data[`Paper ${i}`]}</td>
-                        <td></td><td></td>
-                    </tr>`;
+                    rows += `<tr><td>${formatDate(data[`Date ${i}`])}</td><td>${data[`Paper ${i}`]}</td><td></td><td></td></tr>`;
                 }
             }
 
@@ -231,6 +184,7 @@
                             <div class="photo-box">
                                 ${data['Photo URL'] ? `<img src="${data['Photo URL']}">` : 'Affix recent passport size photograph in school uniform'}
                             </div>
+                            <div class="issued-under-photo">Issued: ${issuedTime}</div>
                         </div>
                     </div>
 
@@ -240,9 +194,7 @@
                     </div>
 
                     <table class="exam-table">
-                        <thead>
-                            <tr><th>Date</th><th>Subject / Paper</th><th>Student Sig.</th><th>Invigilator Sig.</th></tr>
-                        </thead>
+                        <thead><tr><th>Date</th><th>Subject / Paper</th><th>Student Sig.</th><th>Invigilator Sig.</th></tr></thead>
                         <tbody>${rows}</tbody>
                     </table>
 
@@ -256,25 +208,24 @@
                             <div class="sig-line">Principal's Signature</div>
                         </div>
                     </footer>
-                    <div class="page-timestamp">Issued: ${issuedTime}</div>
                 </div>
 
                 <div class="instructions-page">
                     <div class="page-background-overlay"></div>
                     <h2 style="color: var(--school-blue); text-align: center; text-decoration: underline;">EXAMINATION INSTRUCTIONS</h2>
-                    <ul style="line-height: 2.2; font-size: 16px; margin-top: 20px; color: #000; font-weight: 500;">
-                        <li><strong>Security Verification:</strong> This document is digitally authenticated. The barcode encodes a secure session hash ${securityHash} verified via the principal office.</li>
-                        <li><strong>Reporting:</strong> Reach the school 15 minutes before reporting time.</li>
-                        <li><strong>Admit Card:</strong> Without this secure physical admit card, entry is strictly barred.</li>
-                        <li><strong>Electronics:</strong> Possession of smartphones or smartwatches results in immediate disqualification.</li>
-                        <li><strong>Malpractice:</strong> Any form of unfair means will lead to cancellation of candidature.</li>
-                        <li><strong>Uniform:</strong> Candidates must be in full official school uniform.</li>
-                    </ul>
+                    <ol style="line-height: 2.2; font-size: 15px; margin-top: 15px; color: #000; font-weight: 500; padding-left: 25px;">
+                        <li>On all examination days, students must carry their Admit Card. Without the admit card, entry into the examination hall will not be permitted.</li>
+                        <li>Students must reach the school at least 15 minutes before the reporting time. Late entry after the seating time will not be allowed.</li>
+                        <li>Carrying electronic devices such as mobile phones, smartwatches, calculators, or any other gadgets inside the examination hall is strictly prohibited.</li>
+                        <li>No candidate shall adopt or indulge in unfair means or malpractices during the examination. If found guilty, the candidature will be cancelled and legal action will be taken.</li>
+                        <li>Students must maintain silence and discipline inside the examination hall. Any misconduct will lead to immediate disqualification.</li>
+                        <li>Do not write anything on the question paper or admit card, except where signatures are required.</li>
+                        <li>The admit card must clearly display all student details, the barcode, and the principal's signature. Admit cards without these will not be accepted.</li>
+                        <li>Students must verify all details carefully before printing the admit card. In case of any errors, immediately inform the school administration.</li>
+                    </ol>
                     <div style="margin-top: auto;">
-                        <div style="text-align: center;">
-                            <div class="hash-disp" style="margin-bottom: 5px;">${securityHash}</div>
-                        </div>
-                        <div class="page-timestamp">Issued: ${issuedTime}</div>
+                        <div style="text-align: center;"><div class="hash-disp">${securityHash}</div></div>
+                        <div class="page-timestamp-footer">Issued: ${issuedTime}</div>
                     </div>
                 </div>
             `;
