@@ -35,10 +35,10 @@
             flex-direction: column; margin-bottom: 20px; overflow: hidden;
         }
 
-        .watermark {
+        /* Fixed PDF Watermark using IMG tag for better rendering */
+        .watermark-img {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 135mm; height: 135mm; opacity: 0.25; z-index: 0;
-            background: url('logo.png') center/contain no-repeat;
+            width: 140mm; opacity: 0.22; z-index: 0; pointer-events: none;
         }
 
         .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2.5px solid #000; padding-bottom: 10px; margin-bottom: 20px; position: relative; z-index: 1; }
@@ -65,20 +65,20 @@
         }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .barcode-section { text-align: center; margin: 25px 0; position: relative; z-index: 1; }
+        .barcode-section { text-align: center; margin: 20px 0; position: relative; z-index: 1; }
         .barcode-disp { font-family: 'Libre Barcode 128', cursive; font-size: 70px; color: #000; line-height: 1; }
 
-        .exam-table { width: 100%; border-collapse: collapse; margin-top: 15px; z-index: 1; }
+        .exam-table { width: 100%; border-collapse: collapse; margin-top: 10px; z-index: 1; }
         .exam-table th { background: var(--table-head); color: white; padding: 12px; font-size: 13px; border: 1px solid #000; }
         .exam-table td { border: 1px solid #000; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; }
 
-        .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-top: 35px; position: relative; z-index: 1; }
+        .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-top: 30px; position: relative; z-index: 1; }
         .sig-item { text-align: center; width: 220px; position: relative; }
         .sig-img { height: 65px; margin-bottom: 5px; object-fit: contain; position: relative; z-index: 3; }
         
         .stamp-official {
             position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            width: 110px; height: 110px; opacity: 0.8; z-index: 2; pointer-events: none;
+            width: 110px; height: 110px; opacity: 0.85; z-index: 2; pointer-events: none;
         }
 
         .sig-line { border-top: 2px solid #000; padding-top: 5px; font-weight: bold; font-size: 14px; color: #000; }
@@ -86,19 +86,18 @@
         .btn-area { display: none; gap: 10px; margin: 20px 0; }
         .print-btn { padding: 15px 35px; background: var(--school-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
 
-        .security-footer { text-align: center; font-size: 11px; color: #000; margin-top: 12px; letter-spacing: 0.5px; font-weight: bold; position: relative; z-index: 1; }
+        .verification-sec { text-align: center; margin-top: 15px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1;}
+        .qr-small { margin-bottom: 5px; }
+        .security-footer { font-size: 11px; color: #000; letter-spacing: 0.5px; font-weight: bold; }
+        .page-timestamp { text-align: center; font-size: 11px; font-weight: bold; padding-top: 10px; color: #000; position: relative; z-index: 1; border-top: 1px solid #000; margin-top: 15px;}
 
         @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             body { padding: 0; background: white; }
             .login-container, .btn-area { display: none !important; }
             .page-container { display: block !important; width: 100%; margin: 0; }
-            .admit-card-page, .instructions-page { 
-                border: 1px solid #000 !important; 
-                height: 296mm; 
-                page-break-after: always; 
-                box-shadow: none;
-            }
-            .watermark { opacity: 0.15 !important; }
+            .admit-card-page, .instructions-page { border: 1px solid #000 !important; height: 296mm; page-break-after: always; box-shadow: none; }
+            .watermark-img { opacity: 0.18 !important; }
         }
     </style>
 </head>
@@ -125,6 +124,7 @@
         <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Admit Card</button>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         const API = 'https://script.google.com/macros/s/AKfycbzPWWCpUt5GPQ1rEGeAIgt79zJMWCZlXbKx_0PvrXDUHJ5QMY1rlC9hhKS5C4KLNCJz/exec';
 
@@ -166,9 +166,9 @@
 
         function renderCard(data) {
             const now = new Date();
-            // Wrap ID in asterisks for standard barcode scanning (Start/Stop Characters)
+            const issuedTime = now.toLocaleString('en-GB', { hour12: false });
             const barcodeID = `*${data['Student ID']}*`;
-            const securityCode = btoa(data['Student ID'] + now.getTime()).substring(0, 16).toUpperCase();
+            const securityHash = btoa(data['Student ID'] + now.getTime()).substring(0, 16).toUpperCase();
             
             let rows = '';
             for(let i=1; i<=10; i++) {
@@ -183,7 +183,7 @@
 
             const html = `
                 <div class="admit-card-page">
-                    <div class="watermark"></div>
+                    <img src="logo.png" class="watermark-img">
                     <header class="header">
                         <img src="logo.png" class="logo-h">
                         <div class="header-text">
@@ -234,26 +234,39 @@
                             <div class="sig-line">Principal's Signature</div>
                         </div>
                     </footer>
-                    <div class="security-footer">${securityCode} VERIFIED VIA MVMN PRINCIPAL OFFICE</div>
+                    
+                    <div class="verification-sec">
+                        <div id="qr-page1" class="qr-small"></div>
+                        <div class="security-footer">VERIFIED VIA MVMN PRINCIPAL OFFICE</div>
+                    </div>
+                    <div class="page-timestamp">Issued: ${issuedTime}</div>
                 </div>
 
                 <div class="instructions-page">
-                    <div class="watermark"></div>
+                    <img src="logo.png" class="watermark-img">
                     <h2 style="color: var(--school-blue); text-align: center; text-decoration: underline;">EXAMINATION INSTRUCTIONS</h2>
                     <ul style="line-height: 2.2; font-size: 16px; margin-top: 20px; color: #000; font-weight: 500;">
-                        <li><strong>Verification:</strong> This document contains a secure scannable barcode and a Principal Office authentication code. Scan the barcode to verify the Student ID.</li>
+                        <li><strong>Authentication:</strong> This document contains a secure QR code and Barcode linked to the school office. Scan the QR code to verify the secure session hash.</li>
                         <li><strong>Reporting:</strong> Students must report 15 minutes prior to the examination.</li>
                         <li><strong>Mandatory Carry:</strong> Entry is strictly prohibited without this physical admit card.</li>
                         <li><strong>Prohibited Items:</strong> No smartphones, smartwatches, or calculators allowed inside.</li>
                         <li><strong>Discipline:</strong> Any form of malpractice results in immediate disqualification.</li>
                         <li><strong>Uniform:</strong> Full school uniform is required for all candidates.</li>
                     </ul>
-                    <div style="margin-top: auto; text-align: center; border-top: 1px solid #000; padding-top: 15px; font-size: 12px; color: #000; font-weight: bold;">
-                        Digital Secure ID: ${data['Student ID']} | Issued: ${now.toLocaleString()}
+                    <div style="margin-top: auto;">
+                        <div class="verification-sec">
+                            <div id="qr-page2" class="qr-small"></div>
+                            <div class="security-footer">VERIFIED VIA MVMN PRINCIPAL OFFICE</div>
+                        </div>
+                        <div class="page-timestamp">Issued: ${issuedTime}</div>
                     </div>
                 </div>
             `;
             document.getElementById('renderArea').innerHTML = html;
+
+            // Generate QR Codes
+            new QRCode(document.getElementById("qr-page1"), { text: securityHash, width: 60, height: 60 });
+            new QRCode(document.getElementById("qr-page2"), { text: securityHash, width: 60, height: 60 });
         }
     </script>
 </body>
