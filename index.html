@@ -18,7 +18,6 @@
 
         body { font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; background: #e9ecef; display: flex; flex-direction: column; align-items: center; }
 
-        /* Login Styling */
         .login-container { width: 100%; max-width: 400px; margin-top: 50px; }
         .login-box { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid var(--school-blue); }
         .logo-login { width: 80px; margin-bottom: 20px; }
@@ -27,7 +26,6 @@
         .login-box input { width: 100%; padding: 12px 12px 12px 45px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         .login-box button { width: 100%; padding: 14px; background: var(--school-blue); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
 
-        /* Admit Card Layout */
         .page-container { width: 210mm; display: none; margin-top: 20px; }
         
         .admit-card-page, .instructions-page {
@@ -36,14 +34,12 @@
             flex-direction: column; margin-bottom: 20px; overflow: hidden;
         }
 
-        /* Enhanced Watermark */
         .watermark {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 140mm; height: 140mm; opacity: 0.15; z-index: 0;
+            width: 130mm; height: 130mm; opacity: 0.20; z-index: 0;
             background: url('logo.png') center/contain no-repeat;
         }
 
-        /* Header Dual Logos */
         .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 20px; position: relative; z-index: 1; }
         .logo-h { width: 90px; height: 90px; object-fit: contain; }
         .header-text { text-align: center; flex: 1; }
@@ -63,13 +59,13 @@
         .photo-box { 
             width: 150px; height: 180px; border: 2px solid #000; 
             display: flex; align-items: center; justify-content: center;
-            font-size: 11px; color: #444; font-weight: bold; padding: 5px; text-align: center;
+            font-size: 10px; color: #444; font-weight: bold; padding: 5px; text-align: center;
             background: #fff;
         }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .barcode-section { text-align: center; margin: 25px 0; position: relative; z-index: 1; }
-        .barcode-disp { font-family: 'Libre Barcode 128', cursive; font-size: 70px; color: #000; line-height: 1; }
+        .barcode-disp { font-family: 'Libre Barcode 128', cursive; font-size: 65px; color: #000; line-height: 1; }
 
         .exam-table { width: 100%; border-collapse: collapse; margin-top: 15px; z-index: 1; }
         .exam-table th { background: var(--school-blue); color: white; padding: 10px; font-size: 13px; }
@@ -79,10 +75,10 @@
         .sig-item { text-align: center; width: 220px; position: relative; }
         .sig-img { height: 60px; margin-bottom: 5px; object-fit: contain; position: relative; z-index: 2; }
         
-        /* Security Seal Overlay */
-        .seal-overlay {
-            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            width: 90px; height: 90px; opacity: 0.4; z-index: 1; pointer-events: none;
+        /* Overlay stamp.png on signature area */
+        .stamp-official {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 100px; opacity: 0.7; z-index: 1; pointer-events: none;
         }
 
         .sig-line { border-top: 2px solid #000; padding-top: 5px; font-weight: bold; font-size: 14px; }
@@ -90,18 +86,13 @@
         .btn-area { display: none; gap: 10px; margin: 20px 0; }
         .print-btn { padding: 15px 35px; background: var(--school-blue); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
 
-        .security-hash { text-align: center; font-size: 10px; color: #888; margin-top: 10px; letter-spacing: 1px; }
+        .security-hash { text-align: center; font-size: 10px; color: #888; margin-top: 10px; letter-spacing: 1px; font-weight: bold; }
 
         @media print {
             body { padding: 0; background: white; }
             .login-container, .btn-area { display: none !important; }
             .page-container { display: block !important; width: 100%; margin: 0; }
-            .admit-card-page, .instructions-page { 
-                border: 1px solid #000 !important; 
-                height: 296mm; 
-                page-break-after: always; 
-                box-shadow: none;
-            }
+            .admit-card-page, .instructions-page { border: 1px solid #000 !important; height: 296mm; page-break-after: always; box-shadow: none; }
         }
     </style>
 </head>
@@ -114,7 +105,7 @@
             <form id="loginForm">
                 <div class="input-group"><i class="fa-solid fa-id-card"></i><input id="sid" placeholder="Student ID" required></div>
                 <div class="input-group"><i class="fa-solid fa-calendar"></i><input id="dob" type="date" required></div>
-                <button type="submit" id="btnS">Authorize Download</button>
+                <button type="submit" id="btnS">Secure Verification</button>
             </form>
             <p id="msg" style="color: red; font-size: 14px; margin-top: 10px;"></p>
         </div>
@@ -125,7 +116,7 @@
     </div>
 
     <div class="btn-area" id="actionArea">
-        <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-shield-halved"></i> Authenticate & Print</button>
+        <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-shield-check"></i> Print Secure Admit Card</button>
     </div>
 
     <script>
@@ -138,7 +129,7 @@
             const btn = document.getElementById('btnS');
             
             btn.disabled = true;
-            btn.textContent = 'Verifying Identity...';
+            btn.textContent = 'Verifying Record...';
 
             try {
                 const res = await fetch(API);
@@ -154,10 +145,10 @@
                     document.getElementById('msg').textContent = 'Verification Failed.';
                 }
             } catch (err) {
-                document.getElementById('msg').textContent = 'Server Busy. Try again.';
+                document.getElementById('msg').textContent = 'Server Connection Error.';
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Authorize Download';
+                btn.textContent = 'Secure Verification';
             }
         });
 
@@ -168,7 +159,12 @@
         }
 
         function renderCard(data) {
-            const securityHash = btoa(data['Student ID'] + Date.now()).substring(0, 16).toUpperCase();
+            const now = new Date();
+            // Encode: StudentID + Day + Month (Keeps barcode short but unique)
+            const barcodeID = `${data['Student ID']}${now.getDate()}${now.getMonth()+1}`;
+            // Generate unique Session Hash
+            const securityHash = btoa(data['Student ID'] + now.getTime()).substring(0, 16).toUpperCase();
+            
             let rows = '';
             for(let i=1; i<=10; i++) {
                 if(data[`Date ${i}`]) {
@@ -212,7 +208,7 @@
                     </div>
 
                     <div class="barcode-section">
-                        <div class="barcode-disp">${data['Student ID']}</div>
+                        <div class="barcode-disp">${barcodeID}</div>
                     </div>
 
                     <table class="exam-table">
@@ -228,7 +224,7 @@
                             <div class="sig-line">Student's Signature</div>
                         </div>
                         <div class="sig-item">
-                            <img src="logo.png" class="seal-overlay"> <img src="sign.png" class="sig-img">
+                            <img src="stemp.png" class="stamp-official"> <img src="sign.png" class="sig-img">
                             <div class="sig-line">Principal's Signature</div>
                         </div>
                     </footer>
@@ -238,16 +234,16 @@
                 <div class="instructions-page">
                     <div class="watermark" style="opacity: 0.05"></div>
                     <h2 style="color: var(--school-blue); text-align: center; text-decoration: underline;">EXAMINATION INSTRUCTIONS</h2>
-                    <ul style="line-height: 2.2; font-size: 15px; margin-top: 20px; color: #222;">
-                        <li><strong>Authenticity:</strong> This document is digitally verified. Any tampering with the details or the session hash will make this card invalid.</li>
-                        <li><strong>Reporting:</strong> Students must report to the examination hall 20 minutes before time.</li>
-                        <li><strong>Admit Card:</strong> Entry will strictly be denied without a printed copy of this secure admit card.</li>
-                        <li><strong>Gadgets:</strong> Strictly no electronic devices, including smartwatches, are permitted.</li>
-                        <li><strong>Conduct:</strong> Indulging in unfair means will lead to immediate expulsion and legal action.</li>
-                        <li><strong>Uniform:</strong> Full and proper school uniform is mandatory for all examination days.</li>
+                    <ul style="line-height: 2; font-size: 15px; margin-top: 20px; color: #222;">
+                        <li><strong>Admit Card Verification:</strong> To ensure authenticity, scan the barcode and match it with the Student ID. The **Session Hash** at the bottom is a unique digital footprint for this document.</li>
+                        <li><strong>Reporting:</strong> Students must report to the hall 15 minutes before exam commencement.</li>
+                        <li><strong>Admit Card:</strong> Printed copies of this admit card must be carried daily.</li>
+                        <li><strong>Electronics:</strong> No mobile phones or electronic devices allowed.</li>
+                        <li><strong>Malpractice:</strong> Use of unfair means will result in disqualification.</li>
+                        <li><strong>Uniform:</strong> Full school uniform is mandatory.</li>
                     </ul>
                     <div style="margin-top: auto; text-align: center; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #777;">
-                        Computer Generated Document | Secure ID: ${data['Student ID']} | Generated: ${new Date().toLocaleString()}
+                        Computer Generated Document | Secure ID: ${data['Student ID']} | Generated: ${now.toLocaleString()}
                     </div>
                 </div>
             `;
