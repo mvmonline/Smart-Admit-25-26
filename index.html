@@ -6,7 +6,7 @@
     <title>MVM Nalbari - Admit Portal</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto:wght@400;700&family=Libre+Barcode+39&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto:wght@400;500;700&family=Libre+Barcode+39&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
@@ -19,68 +19,95 @@
 
         body { font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; background: #e9ecef; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
 
-        /* --- Login Interface (All elements inside the box) --- */
-        .login-container { width: 100%; max-width: 500px; }
+        /* --- New Login Interface Design --- */
+        .login-container { width: 100%; max-width: 600px; }
         
         .login-box { 
             background: white; 
-            padding: 40px; 
-            border-radius: 20px; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             text-align: center;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #ccc;
+        }
+
+        /* Login Header Area */
+        .login-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .login-header img { width: 70px; height: 70px; object-fit: contain; }
+        .login-header-text h1 { font-family: 'Montserrat', sans-serif; color: var(--school-blue); font-size: 18px; font-weight: 800; margin: 0; line-height: 1.2; }
+        .login-header-text h2 { color: var(--exam-red); font-size: 14px; font-weight: 700; margin: 5px 0 0 0; text-transform: uppercase; }
+        .login-header-text h3 { color: var(--admit-green); font-size: 20px; font-weight: 800; margin: 5px 0 0 0; }
+
+        /* Blue Highlight Section */
+        .login-title-bar {
+            background-color: var(--school-blue);
+            color: white;
+            padding: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            text-transform: uppercase;
         }
         
-        .logo-login { width: 110px; margin-bottom: 15px; }
-        
-        .school-title-header { 
-            color: var(--school-blue); 
-            font-family: 'Montserrat'; 
-            font-weight: 800; 
-            font-size: 22px; 
-            margin: 0 0 10px 0; 
-            text-transform: uppercase; 
-            line-height: 1.2;
-        }
-        
-        .admit-download-label { 
-            color: var(--school-blue); 
-            font-family: 'Montserrat'; 
-            font-weight: 800; 
-            font-size: 30px; 
-            margin-bottom: 30px; 
-            letter-spacing: 0.5px;
-        }
-        
-        .input-group { position: relative; margin-bottom: 20px; }
-        .input-group i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #666; font-size: 18px; }
+        /* Form Styling */
+        .form-row { text-align: left; margin-bottom: 15px; }
+        .form-label { font-weight: 700; color: #333; margin-bottom: 5px; display: block; font-size: 14px; }
         
         .login-box input { 
             width: 100%; 
-            padding: 15px 15px 15px 50px; 
-            border: 2px solid #ddd; 
-            border-radius: 12px; 
+            padding: 10px; 
+            border: 2px solid #ccc; 
+            border-radius: 5px; 
             font-size: 16px; 
             box-sizing: border-box; 
-            transition: 0.3s; 
         }
         .login-box input:focus { border-color: var(--school-blue); outline: none; background: #f0f4ff; }
         
+        /* Captcha Styling */
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .captcha-box {
+            background: #eee;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: 800;
+            padding: 8px;
+            letter-spacing: 5px;
+            text-decoration: line-through;
+            border-radius: 5px;
+            flex: 1;
+            text-align: center;
+            user-select: none;
+        }
+        .captcha-input { flex: 1; }
+
         .download-btn { 
             width: 100%; 
-            padding: 18px; 
-            background: #008000; /* Standard Green */
+            padding: 12px; 
+            background: #008000; /* Green Button */
             color: white; 
             border: none; 
-            border-radius: 12px; 
-            font-weight: 800; 
+            border-radius: 5px; 
+            font-weight: 700; 
             cursor: pointer; 
-            font-size: 20px; 
+            font-size: 18px; 
             text-transform: uppercase; 
-            box-shadow: 0 5px 15px rgba(0,128,0,0.3);
             transition: 0.3s;
         }
-        .download-btn:hover { background: #006400; transform: translateY(-2px); }
+        .download-btn:hover { background: #006400; }
         
         #msg { margin-top: 20px; font-weight: 700; font-size: 16px; }
         .loading-state { color: #2196f3; display: flex; align-items: center; justify-content: center; gap: 10px; font-style: italic; }
@@ -100,25 +127,25 @@
             flex-direction: column; 
             margin-bottom: 20px; 
             overflow: hidden; 
-            /* Ensure stacking context for watermark */
             z-index: 1;
         }
 
-        /* --- Watermark Settings --- */
+        /* --- Watermark Settings (Modified) --- */
         .page-background-overlay { 
             position: absolute; 
             top: 0; 
             left: 0; 
             width: 100%; 
             height: 100%; 
-            background-image: url('stemp.png'); 
-            background-repeat: repeat; 
-            background-size: 150px 150px; 
-            opacity: 0.20; /* Visibility increased */
-            z-index: -1; /* Sits behind text but on top of white bg */
+            background-image: url('logo.png'); /* Changed to Logo */
+            background-repeat: no-repeat;      /* Single Image */
+            background-position: center center; /* Center Page */
+            background-size: 400px;            /* Size adjustment */
+            opacity: 0.10;                     /* Low opacity */
+            z-index: -1; 
         }
 
-        /* --- Header (Masks the Watermark) --- */
+        /* --- Header --- */
         .header { 
             display: flex; 
             align-items: center; 
@@ -127,8 +154,8 @@
             padding-bottom: 10px; 
             margin-bottom: 20px; 
             position: relative; 
-            z-index: 5; /* Above watermark */
-            background: white; /* Blocks watermark */
+            z-index: 5; 
+            background: white; 
         }
         
         .logo-h { width: 115px; height: 115px; object-fit: contain; filter: contrast(1.2) brightness(0.9); }
@@ -161,7 +188,7 @@
             height: 65px;
             white-space: nowrap;
         }
-        .hash-disp { font-weight: 800; font-size: 14px; margin-top: 5px; color: #000; letter-spacing: 1px; font-family: monospace; }
+        /* No text below barcode as requested */
 
         /* --- Exam Table --- */
         .exam-table { width: 100%; border-collapse: collapse; margin-top: 10px; z-index: 1; }
@@ -172,7 +199,7 @@
             text-align: center; 
             font-size: 13px; 
             font-weight: 700; 
-            background: rgba(255,255,255,0.4); /* Light transparency to show watermark */
+            background: rgba(255,255,255,0.4); 
         }
 
         .footer-sigs { display: flex; justify-content: space-between; margin-top: auto; padding-top: 45px; position: relative; z-index: 1; }
@@ -197,20 +224,43 @@
 
     <div class="login-container" id="loginWrapper">
         <div class="login-box">
-            <img src="logo.png" class="logo-login" alt="School Logo">
-            <h1 class="school-title-header">MAHARISHI VIDYA MANDIR, NALBARI</h1>
-            <h2 class="admit-download-label">ADMIT CARD</h2>
+            
+            <div class="login-header">
+                <img src="logo.png" alt="Logo">
+                <div class="login-header-text">
+                    <h1>MAHARISHI VIDYA MANDIR, NALBARI</h1>
+                    <h2>Final Examination 2025-2026</h2>
+                    <h3>ADMIT CARD</h3>
+                </div>
+                <img src="logo.png" alt="Logo">
+            </div>
+
+            <div class="login-title-bar">
+                Login Through Student ID & Date of Birth
+            </div>
             
             <form id="loginForm">
-                <div class="input-group">
-                    <i class="fa-solid fa-user-graduate"></i>
-                    <input id="sid" placeholder="Enter Student ID" required type="text">
+                <div class="form-row">
+                    <label class="form-label">Student ID :</label>
+                    <input id="sid" required type="text">
                 </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-calendar-days"></i>
+                
+                <div class="form-row">
+                    <label class="form-label">Date of Birth :</label>
                     <input id="dob" type="date" required>
                 </div>
-                <button type="submit" class="download-btn" id="subBtn">DOWNLOAD</button>
+
+                <div class="form-row">
+                    <label class="form-label">Captcha :</label>
+                    <div class="captcha-container">
+                        <div id="captchaCode" class="captcha-box"></div>
+                        <div class="captcha-input">
+                            <input id="captchaInput" placeholder="Enter Captcha" required type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="download-btn" id="subBtn">SUBMIT</button>
             </form>
             <div id="msg"></div>
         </div>
@@ -226,34 +276,74 @@
 
     <script>
         const API = 'https://script.google.com/macros/s/AKfycbzPWWCpUt5GPQ1rEGeAIgt79zJMWCZlXbKx_0PvrXDUHJ5QMY1rlC9hhKS5C4KLNCJz/exec';
+        
+        let generatedCaptcha = "";
+
+        // Function to Generate Random Captcha
+        function generateCaptcha() {
+            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let result = "";
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            generatedCaptcha = result;
+            document.getElementById('captchaCode').innerText = result;
+            document.getElementById('captchaInput').value = ""; // Clear input
+        }
+
+        // Generate on Load
+        window.onload = generateCaptcha;
 
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             const sid = document.getElementById('sid').value.trim().toUpperCase();
             const dob = document.getElementById('dob').value;
+            const userCaptcha = document.getElementById('captchaInput').value.trim().toUpperCase();
             const btn = document.getElementById('subBtn');
             const msg = document.getElementById('msg');
             
+            // Validate Captcha
+            if (userCaptcha !== generatedCaptcha) {
+                msg.innerHTML = '<span class="error-state">Wrong Captcha</span>';
+                generateCaptcha(); // Regenerate on error
+                return;
+            }
+
             btn.disabled = true;
             msg.innerHTML = '<div class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Please Wait.....</div>';
 
             try {
                 const res = await fetch(API);
                 const json = await res.json();
-                const student = json.data.find(x => String(x['Student ID']).toUpperCase() === sid && String(x['Date of Birth']) === dob);
                 
-                if (student) {
-                    renderCard(student);
-                    document.getElementById('loginWrapper').style.display = 'none';
-                    document.getElementById('admitCardContainer').style.display = 'block';
-                    document.getElementById('actionArea').style.display = 'flex';
-                } else {
-                    msg.innerHTML = '<span class="error-state">Wrong Student ID or Date of Birth</span>';
+                // First check if Student ID exists
+                const studentByID = json.data.find(x => String(x['Student ID']).toUpperCase() === sid);
+                
+                if (!studentByID) {
+                    // ID incorrect
+                    msg.innerHTML = '<span class="error-state">Wrong Student ID</span>';
                     btn.disabled = false;
+                    generateCaptcha();
+                } else {
+                    // ID correct, now check Date of Birth
+                    if (String(studentByID['Date of Birth']) === dob) {
+                        // Both correct
+                        renderCard(studentByID);
+                        document.getElementById('loginWrapper').style.display = 'none';
+                        document.getElementById('admitCardContainer').style.display = 'block';
+                        document.getElementById('actionArea').style.display = 'flex';
+                    } else {
+                        // DOB incorrect
+                        msg.innerHTML = '<span class="error-state">Wrong Date of Birth</span>';
+                        btn.disabled = false;
+                        generateCaptcha();
+                    }
                 }
             } catch (err) {
                 msg.innerHTML = '<span class="error-state">Connection error. Please try again.</span>';
                 btn.disabled = false;
+                generateCaptcha();
             }
         });
 
@@ -267,12 +357,11 @@
             const now = new Date();
             const issuedTime = now.toLocaleString('en-GB', { hour12: false });
             
-            // SECURITY HASH (Fixed per student for Academic Year)
-            const secretKey = "MVMN202526"; 
-            const securityHash = btoa(data['Student ID'] + data['Date of Birth'] + secretKey).substring(0, 16).toUpperCase();
+            // SECURITY HASH MODIFIED: Now using Serial Number
+            const serialNumber = data['Serial Number'] || '';
             
-            // Barcode format for Code 39
-            const barcodeID = `*${securityHash}*`;
+            // Barcode format for Code 39 (Uses Serial Number)
+            const barcodeID = `*${serialNumber}*`;
             
             let rows = '';
             for(let i=1; i<=10; i++) {
@@ -316,7 +405,6 @@
 
                     <div class="barcode-section">
                         <div class="barcode-disp">${barcodeID}</div>
-                        <div class="hash-disp">${securityHash}</div>
                     </div>
 
                     <table class="exam-table">
@@ -329,9 +417,12 @@
                             ${data['Signature URL'] ? `<img src="${data['Signature URL']}" class="sig-img">` : '<div style="height:60px"></div>'}
                             <div class="sig-line">Student's Signature</div>
                         </div>
-                        <div class="sig-item">
-                            <img src="sign.png" class="sig-img">
-                            <div class="sig-line">Principal's Signature</div>
+                        <div class="sig-item" style="text-align: left; font-size: 11px; font-weight: 800; line-height: 1.4;">
+                            <img src="sign.png" class="sig-img" style="display: block; margin-left: 0;">
+                            Name: PALASH GOGOI<br>
+                            Designation: PRINCIPAL<br>
+                            Date: ${issuedTime}<br>
+                            Location: Nalbari, Assam
                         </div>
                     </footer>
                 </div>
@@ -350,7 +441,7 @@
                         <li>Students must verify all details carefully before printing the admit card. In case of any errors, immediately inform the school administration.</li>
                     </ol>
                     <div style="margin-top: auto; position: relative; z-index: 1;">
-                        <div style="text-align: center;"><div class="hash-disp">${securityHash}</div></div>
+                        <div style="text-align: center;"><div class="hash-disp">${serialNumber}</div></div>
                         <div class="page-timestamp-footer">Issued: ${issuedTime}</div>
                     </div>
                 </div>
